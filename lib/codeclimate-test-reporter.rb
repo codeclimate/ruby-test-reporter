@@ -6,41 +6,26 @@ module CodeClimate
 
     class API
       def self.post_results(result)
-        result = result.merge(environment: Environment.new.as_json)
-        puts result.inspect
-      end
-    end
-
-    class Environment
-      def as_json
-        {
-          repo_token:     ENV["CODECLIMATE_REPO_TOKEN"],
-          pwd:            Dir.pwd,
-          rails_root:     (Rails.root.to_s rescue nil),
-          simplecov_root: ::SimpleCov.root,
-          gem_version:    VERSION,
-          git: {
-            head:   `git log -1 --pretty=format:'%H'`,
-            branch: git_branch,
-          }
-        }
-      end
-
-      def git_branch
-        branch = `git branch`.split("\n").delete_if { |i| i[0] != "*" }
-        branch = [branch].flatten.first
-        branch ? branch.gsub("* ","") : nil
+        puts
+        puts result.to_json
+        puts
       end
     end
 
     class Formatter
       def format(result)
+        totals = Hash.new(0)
+
         source_files = result.files.map do |file|
+          totals[:total]      += file.lines.count
+          totals[:covered]    += file.covered_lines.count
+          totals[:missed]     += file.missed_lines.count
+
           {
             name:             short_filename(file.filename),
             coverage:         file.coverage,
             covered_percent:  file.covered_percent.round(2),
-            covered_strength: file.covered_strength,
+            covered_strength: file.covered_strength.round(2),
             line_counts: {
               total:    file.lines.count,
               covered:  file.covered_lines.count,
@@ -50,9 +35,24 @@ module CodeClimate
         end
 
         API.post_results({
-          source_files:   source_files,
-          test_framework: result.command_name.downcase,
-          run_at:         result.created_at
+          repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
+          source_files:     source_files,
+          run_at:           result.created_at,
+          covered_percent:  result.covered_percent.round(2),
+          covered_strength: result.covered_strength.round(2),
+          line_counts:      totals,
+          git: {
+            head:         `git log -1 --pretty=format:'%H'`,
+            committed_at: committed_at,
+            branch:       git_branch,
+          },
+          environment: {
+            test_framework: result.command_name.downcase,
+            pwd:            Dir.pwd,
+            rails_root:     (Rails.root.to_s rescue nil),
+            simplecov_root: ::SimpleCov.root,
+            gem_version:    VERSION
+          }
         })
 
         true
@@ -61,6 +61,17 @@ module CodeClimate
       def short_filename(filename)
         return filename unless ::SimpleCov.root
         filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
+      end
+
+      def committed_at
+        committed_at = `git log -1 --pretty=format:'%ct'`
+        committed_at.to_i.zero? ? nil : committed_at.to_i
+      end
+
+      def git_branch
+        branch = `git branch`.split("\n").delete_if { |i| i[0] != "*" }
+        branch = [branch].flatten.first
+        branch ? branch.gsub("* ","") : nil
       end
     end
 
