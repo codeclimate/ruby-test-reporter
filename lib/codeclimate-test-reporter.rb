@@ -37,8 +37,15 @@ module CodeClimate
       def format(result)
         source_files = result.files.map do |file|
           {
-            name:     short_filename(file.filename),
-            coverage: file.coverage
+            name:             short_filename(file.filename),
+            coverage:         file.coverage,
+            covered_percent:  file.covered_percent.round(2),
+            covered_strength: file.covered_strength,
+            line_counts: {
+              total:    file.lines.count,
+              covered:  file.covered_lines.count,
+              missed:   file.missed_lines.count
+            }
           }
         end
 
