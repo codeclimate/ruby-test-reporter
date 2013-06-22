@@ -6,9 +6,9 @@ module CodeClimate
 
     class API
       def self.post_results(result)
-        puts
-        puts result.to_json
-        puts
+        File.open("test_coverage.json", "w") do |f|
+          f.write(result.to_json)
+        end
       end
     end
 
@@ -23,7 +23,7 @@ module CodeClimate
 
           {
             name:             short_filename(file.filename),
-            coverage:         file.coverage,
+            coverage:         file.coverage.to_json,
             covered_percent:  file.covered_percent.round(2),
             covered_strength: file.covered_strength.round(2),
             line_counts: {
