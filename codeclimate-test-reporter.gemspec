@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = CodeClimate::TestReporter::VERSION
   spec.authors       = ["Bryan Helmkamp"]
   spec.email         = ["bryan@brynary.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Collects test coverage data from your Ruby test suite and sends it to Code Climate's hosted, automated code review service. Based on SimpleCov.}
+  spec.summary       = %q{Uploads Ruby test coverage data to Code Climate.}
   spec.homepage      = ""
 
   spec.files         = `git ls-files`.split($/)
