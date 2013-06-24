@@ -12,13 +12,13 @@ first step is to create an account at: [https://codeclimate.com](https://codecli
 
 1. Add this to your Gemfile:
 
-      gem install "codeclimate-test-reporter", group: :test
+        gem install "codeclimate-test-reporter", group: :test
 
 1. Start the test reporter **at the very beginning** of your `test_helper.rb` or
   `spec_helper.rb` file:
 
-      require "codeclimate-test-reporter"
-      CodeClimate::TestReporter.start
+        require "codeclimate-test-reporter"
+        CodeClimate::TestReporter.start
 
 Then set the `CODECLIMATE_REPO_TOKEN` environment variable when you run your build
 on your CI server, and the results will show up in your Code Climate account.
