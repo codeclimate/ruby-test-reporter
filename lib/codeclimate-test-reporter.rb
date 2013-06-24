@@ -1,4 +1,6 @@
 require "json"
+require "net/https"
+require "uri"
 
 module CodeClimate
   class TestReporter
@@ -11,6 +13,28 @@ module CodeClimate
       end
 
       def self.post_results(result)
+        uri = URI.parse("#{host}/test_reports")
+        http = Net::HTTP.new(uri.host, uri.port)
+
+        if uri.scheme = "https"
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        end
+
+        http.open_timeout = 5 # in seconds
+        http.read_timeout = 5 # in seconds
+
+        request = Net::HTTP::Post.new(uri.path)
+        request["Content-Type"] = "application/json"
+        request.body = result.to_json
+
+        response = http.request(request)
+
+        if response.code.to_i >= 200 && response.code.t_i < 300
+          response
+        else
+          raise "HTTP Error: #{response.code}"
+        end
       end
     end
 
