@@ -5,7 +5,8 @@ module CodeClimate
     VERSION = "0.0.1"
 
     class API
-      def self.base
+      def self.host
+        ENV["CODECLIMATE_API_HOST"] ||
         "https://codeclimate.com"
       end
 
@@ -35,7 +36,7 @@ module CodeClimate
           }
         end
 
-        puts "Coverage = #{result.covered_percent.round(2)}%.\nSending report to #{API.base} ..."
+        print "Coverage = #{result.covered_percent.round(2)}%. Sending report to #{API.host}... "
 
         API.post_results({
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
@@ -59,7 +60,7 @@ module CodeClimate
           ci_service: ci_service_data
         })
 
-        puts "Report sent to Code Climate."
+        puts "done."
         true
       rescue => ex
         puts "Code Climate encountered an exception:"
