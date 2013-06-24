@@ -5,10 +5,11 @@ module CodeClimate
     VERSION = "0.0.1"
 
     class API
+      def self.base
+        "https://codeclimate.com"
+      end
+
       def self.post_results(result)
-        File.open("test_coverage.json", "w") do |f|
-          f.write(result.to_json)
-        end
       end
     end
 
@@ -34,6 +35,8 @@ module CodeClimate
           }
         end
 
+        puts "Coverage = #{result.covered_percent.round(2)}%.\nSending report to #{API.base} ..."
+
         API.post_results({
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
           source_files:     source_files,
@@ -55,7 +58,16 @@ module CodeClimate
           }
         })
 
+        puts "Report sent to Code Climate."
         true
+      rescue => ex
+        puts "Code Climate encountered an exception:"
+        puts ex.class.to_s
+        puts ex.message
+        ex.backtrace.each do |line|
+          puts line
+        end
+        false
       end
 
       def short_filename(filename)
@@ -76,10 +88,18 @@ module CodeClimate
     end
 
     def self.start
-      require "simplecov"
-      ::SimpleCov.add_filter 'vendor'
-      ::SimpleCov.formatter = Formatter
-      ::SimpleCov.start("test_frameworks")
+      if run?
+        require "simplecov"
+        ::SimpleCov.add_filter 'vendor'
+        ::SimpleCov.formatter = Formatter
+        ::SimpleCov.start("test_frameworks")
+      else
+        puts("Not reporting to Code Climate because ENV['CODECLIMATE_REPO_TOKEN'] is not set.")
+      end
+    end
+
+    def self.run?
+      !!ENV["CODECLIMATE_REPO_TOKEN"]
     end
   end
 end
