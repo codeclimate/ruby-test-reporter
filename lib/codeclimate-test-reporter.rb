@@ -16,7 +16,7 @@ module CodeClimate
         uri = URI.parse("#{host}/test_reports")
         http = Net::HTTP.new(uri.host, uri.port)
 
-        if uri.scheme = "https"
+        if uri.scheme == "https"
           http.use_ssl = true
           http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         end
