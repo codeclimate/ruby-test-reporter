@@ -55,7 +55,8 @@ module CodeClimate
             rails_root:     (Rails.root.to_s rescue nil),
             simplecov_root: ::SimpleCov.root,
             gem_version:    VERSION
-          }
+          },
+          ci_service: ci_service_data
         })
 
         puts "Report sent to Code Climate."
@@ -68,6 +69,38 @@ module CodeClimate
           puts line
         end
         false
+      end
+
+      def ci_service_data
+        if ENV['TRAVIS']
+          {
+            name:             "travis-ci",
+            build_identifier: ENV['TRAVIS_JOB_ID'],
+            pull_request:     ENV['TRAVIS_PULL_REQUEST']
+          }
+        elsif ENV['CIRCLECI']
+          {
+            name:             "circlci",
+            build_identifier: ENV['CIRCLE_BUILD_NUM'],
+            branch:           ENV['CIRCLE_BRANCH'],
+            commit_sha:       ENV['CIRCLE_SHA1']
+          }
+        elsif ENV['SEMAPHORE']
+          {
+            name:             "semaphore",
+            build_identifier: ENV['SEMAPHORE_BUILD_NUMBER']
+          }
+        elsif ENV['JENKINS_URL']
+          {
+            name:             "jenkins",
+            build_identifier: ENV['BUILD_NUMBER'],
+            build_url:        ENV['BUILD_URL'],
+            branch:           ENV['GIT_BRANCH'],
+            commit_sha:       ENV['GIT_COMMIT']
+          }
+        else
+          {}
+        end
       end
 
       def short_filename(filename)
