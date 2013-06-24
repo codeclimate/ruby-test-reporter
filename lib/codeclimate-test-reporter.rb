@@ -30,7 +30,7 @@ module CodeClimate
 
         response = http.request(request)
 
-        if response.code.to_i >= 200 && response.code.t_i < 300
+        if response.code.to_i >= 200 && response.code.to_i < 300
           response
         else
           raise "HTTP Error: #{response.code}"
