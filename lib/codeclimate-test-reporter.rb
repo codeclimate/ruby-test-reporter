@@ -87,8 +87,7 @@ module CodeClimate
         puts "done."
         true
       rescue => ex
-        puts "Code Climate encountered an exception:"
-        puts ex.class.to_s
+        puts "\nCode Climate encountered an exception: #{ex.class}"
         puts ex.message
         ex.backtrace.each do |line|
           puts line
