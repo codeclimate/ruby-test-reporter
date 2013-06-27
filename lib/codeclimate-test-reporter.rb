@@ -1,4 +1,5 @@
 require "json"
+require "digest/sha1"
 require "net/https"
 require "uri"
 
@@ -49,6 +50,7 @@ module CodeClimate
 
           {
             name:             short_filename(file.filename),
+            sha1:             Digest::SHA1.hexdigest(File.open(file.filename, "rb:utf-8").read),
             coverage:         file.coverage.to_json,
             covered_percent:  file.covered_percent.round(2),
             covered_strength: file.covered_strength.round(2),
