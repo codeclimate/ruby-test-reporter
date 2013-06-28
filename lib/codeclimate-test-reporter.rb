@@ -101,6 +101,7 @@ module CodeClimate
         if ENV['TRAVIS']
           {
             name:             "travis-ci",
+            branch:           ENV['TRAVIS_BRANCH'],
             build_identifier: ENV['TRAVIS_JOB_ID'],
             pull_request:     ENV['TRAVIS_PULL_REQUEST']
           }
@@ -114,6 +115,7 @@ module CodeClimate
         elsif ENV['SEMAPHORE']
           {
             name:             "semaphore",
+            branch:           ENV['BRANCH_NAME'],
             build_identifier: ENV['SEMAPHORE_BUILD_NUMBER']
           }
         elsif ENV['JENKINS_URL']
