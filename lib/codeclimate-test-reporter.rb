@@ -50,7 +50,7 @@ module CodeClimate
 
           {
             name:             short_filename(file.filename),
-            sha1:             Digest::SHA1.hexdigest(File.open(file.filename, "rb:utf-8").read),
+            blob_id:          calculate_blob_id(file.filename),
             coverage:         file.coverage.to_json,
             covered_percent:  file.covered_percent.round(2),
             covered_strength: file.covered_strength.round(2),
@@ -127,6 +127,13 @@ module CodeClimate
         else
           {}
         end
+      end
+
+      def calculate_blob_id(path)
+        content = File.open(path, "rb").read
+        header = "blob #{content.length}\0"
+        store = header + content
+        Digest::SHA1.hexdigest(store)
       end
 
       def short_filename(filename)
