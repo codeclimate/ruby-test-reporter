@@ -3,6 +3,8 @@
 Collects test coverage data from your Ruby test suite and sends it to Code
 Climate's hosted, automated code review service. Based on SimpleCov.
 
+**Note:** Code Climate's test coverage functionality is currently in private beta. If you are interested in volunteering for the beta, please contact us at hello@codeclimate.com .
+
 Code Climate - [https://codeclimate.com](https://codeclimate.com)
 
 ## Installation
@@ -24,7 +26,7 @@ Then set the `CODECLIMATE_REPO_TOKEN` environment variable when you run your bui
 on your CI server, and the results will show up in your Code Climate account.
 
 The `CODECLIMATE_REPO_TOKEN` value is provided after you add your repo to your
-Code Climate account.
+Code Climate account if you are in the test coverage private beta.
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
