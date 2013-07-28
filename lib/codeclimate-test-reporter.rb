@@ -5,7 +5,7 @@ require "uri"
 
 module CodeClimate
   class TestReporter
-    VERSION = "0.0.4"
+    VERSION = "0.0.5"
 
     class API
       def self.host
