@@ -128,6 +128,12 @@ module CodeClimate
             branch:           ENV['GIT_BRANCH'],
             commit_sha:       ENV['GIT_COMMIT']
           }
+        elsif ENV['TDDIUM']
+          {
+            name:             "tddium",
+            build_identifier: ENV['TDDIUM_SESSION_ID'],
+            worker_id:        ENV['TDDIUM_TID']
+          }
         else
           {}
         end
