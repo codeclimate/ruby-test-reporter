@@ -161,6 +161,7 @@ module CodeClimate
       if run?
         require "simplecov"
         ::SimpleCov.add_filter 'vendor'
+        ::SimpleCov.add_filter 'spec'
         ::SimpleCov.formatter = Formatter
         ::SimpleCov.start("test_frameworks")
       else
