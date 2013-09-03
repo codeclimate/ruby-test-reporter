@@ -2,6 +2,8 @@ require "json"
 require "digest/sha1"
 require "net/https"
 require "uri"
+require "tmpdir"
+require "securerandom"
 
 module CodeClimate
   class TestReporter
@@ -43,8 +45,31 @@ module CodeClimate
 
     class Formatter
       def format(result)
-        totals = Hash.new(0)
+        print "Coverage = #{result.covered_percent.round(2)}%."
 
+        payload = to_payload(result)
+        if tddium? || ENV["TO_FILE"]
+          file_path = File.join(Dir.tmpdir, "coverage-worker-#{SecureRandom.uuid}.json")
+          print "Coverage results saved to #{file_path}..."
+          File.open(file_path, "w") { |file| file.write(payload.to_json) }
+        else
+          print "Sending report to #{API.host}... "
+          API.post_results(payload)
+        end
+
+        puts "done."
+        true
+      rescue => ex
+        puts "\nCode Climate encountered an exception: #{ex.class}"
+        puts ex.message
+        ex.backtrace.each do |line|
+          puts line
+        end
+        false
+      end
+
+      def to_payload(result)
+        totals = Hash.new(0)
         source_files = result.files.map do |file|
           totals[:total]      += file.lines.count
           totals[:covered]    += file.covered_lines.count
@@ -64,9 +89,7 @@ module CodeClimate
           }
         end
 
-        print "Coverage = #{result.covered_percent.round(2)}%. Sending report to #{API.host}... "
-
-        API.post_results({
+        {
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
           source_files:     source_files,
           run_at:           result.created_at,
@@ -86,17 +109,7 @@ module CodeClimate
             gem_version:    VERSION
           },
           ci_service: ci_service_data
-        })
-
-        puts "done."
-        true
-      rescue => ex
-        puts "\nCode Climate encountered an exception: #{ex.class}"
-        puts ex.message
-        ex.backtrace.each do |line|
-          puts line
-        end
-        false
+        }
       end
 
       def ci_service_data
@@ -160,6 +173,10 @@ module CodeClimate
         branch = `git branch`.split("\n").delete_if { |i| i[0] != "*" }
         branch = [branch].flatten.first
         branch ? branch.gsub("* ","") : nil
+      end
+
+      def tddium?
+        ci_service_data && ci_service_data[:name] == "tddium"
       end
     end
 
