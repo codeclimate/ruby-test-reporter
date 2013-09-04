@@ -15,6 +15,44 @@ module CodeClimate
         "https://codeclimate.com"
       end
 
+      def self.batch_post(files)
+        uri = URI.parse("#{host}/test_reports/batch")
+        http = Net::HTTP.new(uri.host, uri.port)
+        if uri.scheme == "https"
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          http.ca_file = File.expand_path('../../config/cacert.pem', __FILE__)
+          http.verify_depth = 5
+        end
+        http.open_timeout = 5 # in seconds
+        http.read_timeout = 5 # in seconds
+        boundary = SecureRandom.uuid
+
+        post_body = []
+        post_body << "--#{boundary}\r\n"
+        post_body << "Content-Disposition: form-data; name=\"repo_token\"\r\n"
+        post_body << "\r\n"
+        post_body << ENV["CODECLIMATE_REPO_TOKEN"]
+        files.each_with_index do |file, index|
+          post_body << "\r\n--#{boundary}\r\n"
+          post_body << "Content-Disposition: form-data; name=\"coverage_reports[#{index}]\"; filename=\"#{File.basename(file)}\"\r\n"
+          post_body << "Content-Type: application/json\r\n"
+          post_body << "\r\n"
+          post_body << File.read(file)
+        end
+        post_body << "\r\n--#{boundary}--\r\n"
+        request = Net::HTTP::Post.new(uri.request_uri)
+        request.body = post_body.join
+        request["Content-Type"] = "multipart/form-data, boundary=#{boundary}"
+        response = http.request(request)
+
+        if response.code.to_i >= 200 && response.code.to_i < 300
+          response
+        else
+          raise "HTTP Error: #{response.code}"
+        end
+      end
+
       def self.post_results(result)
         uri = URI.parse("#{host}/test_reports")
         http = Net::HTTP.new(uri.host, uri.port)
@@ -49,7 +87,7 @@ module CodeClimate
 
         payload = to_payload(result)
         if tddium? || ENV["TO_FILE"]
-          file_path = File.join(Dir.tmpdir, "coverage-worker-#{SecureRandom.uuid}.json")
+          file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
           print "Coverage results saved to #{file_path}..."
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
