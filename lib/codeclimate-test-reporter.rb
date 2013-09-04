@@ -106,6 +106,10 @@ module CodeClimate
         false
       end
 
+      def partial?
+        tddium?
+      end
+
       def to_payload(result)
         totals = Hash.new(0)
         source_files = result.files.map do |file|
@@ -134,6 +138,7 @@ module CodeClimate
           covered_percent:  result.covered_percent.round(2),
           covered_strength: result.covered_strength.round(2),
           line_counts:      totals,
+          partial:          partial?
           git: {
             head:         `git log -1 --pretty=format:'%H'`,
             committed_at: committed_at,
