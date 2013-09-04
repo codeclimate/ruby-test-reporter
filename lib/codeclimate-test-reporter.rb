@@ -138,7 +138,7 @@ module CodeClimate
           covered_percent:  result.covered_percent.round(2),
           covered_strength: result.covered_strength.round(2),
           line_counts:      totals,
-          partial:          partial?
+          partial:          partial?,
           git: {
             head:         `git log -1 --pretty=format:'%H'`,
             committed_at: committed_at,
