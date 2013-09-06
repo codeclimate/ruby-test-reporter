@@ -5,7 +5,7 @@ require 'codeclimate-test-reporter'
 require 'tmpdir'
 
 if ENV["CODECLIMATE_REPO_TOKEN"]
-  tmpdir = Dir.tmpdir
+  tmpdir = "/mnt/tmp/tmp#{ENV['TDDIUM_TID']}"
   puts "Searching #{tmpdir} for files to POST."
   coverage_report_files = Dir.glob("#{tmpdir}/codeclimate-test-coverage-*")
   if coverage_report_files.size > 0
