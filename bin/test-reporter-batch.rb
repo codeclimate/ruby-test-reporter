@@ -5,6 +5,7 @@ require 'codeclimate-test-reporter'
 require 'tmpdir'
 
 if ENV["CODECLIMATE_REPO_TOKEN"]
+  puts "*** debug *** Tmpdir as reported by Dir.tmpdir: #{Dir.tmpdir}."
   tmpdir = "/mnt/tmp/tmp#{ENV['TDDIUM_TID']}"
   puts "Searching #{tmpdir} for files to POST."
   coverage_report_files = Dir.glob("#{tmpdir}/codeclimate-test-coverage-*")
