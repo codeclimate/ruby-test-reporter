@@ -11,9 +11,9 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
   if coverage_report_files.size > 0
     puts "Found: "
     puts coverage_report_files.join("\n")
-    api = CodeClimate::TestReporter::API.new
-    print "Sending reports to #{api.host}..."
-    api.batch_post_results(coverage_report_files)
+    client = CodeClimate::TestReporter::Client.new
+    print "Sending reports to #{client.host}..."
+    client.batch_post_results(coverage_report_files)
     puts "done."
   else
     puts "No files found to POST."

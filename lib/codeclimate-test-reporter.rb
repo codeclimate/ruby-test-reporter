@@ -9,7 +9,7 @@ module CodeClimate
   class TestReporter
     VERSION = "0.0.5"
 
-    class API
+    class Client
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||
@@ -92,9 +92,9 @@ module CodeClimate
           print "Coverage results saved to #{file_path}..."
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
-          api = API.new
-          print "Sending report to #{api.host}... "
-          api.post_results(payload)
+          client = Client.new
+          print "Sending report to #{client.host}... "
+          client.post_results(payload)
         end
 
         puts "done."
