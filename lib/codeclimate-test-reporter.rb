@@ -12,12 +12,8 @@ module CodeClimate
     class API
 
       def host
-        self.class.host
-      end
-
-      def self.host
         ENV["CODECLIMATE_API_HOST"] ||
-        "https://codeclimate.com"
+          "https://codeclimate.com"
       end
 
       def batch_post_results(files)
@@ -96,8 +92,9 @@ module CodeClimate
           print "Coverage results saved to #{file_path}..."
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
-          print "Sending report to #{API.host}... "
-          API.new.post_results(payload)
+          api = API.new
+          print "Sending report to #{api.host}... "
+          api.post_results(payload)
         end
 
         puts "done."
