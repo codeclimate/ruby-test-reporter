@@ -10,12 +10,17 @@ module CodeClimate
     VERSION = "0.0.5"
 
     class API
+
+      def host
+        self.class.host
+      end
+
       def self.host
         ENV["CODECLIMATE_API_HOST"] ||
         "https://codeclimate.com"
       end
 
-      def self.batch_post(files)
+      def batch_post_results(files)
         uri = URI.parse("#{host}/test_reports/batch")
         http = Net::HTTP.new(uri.host, uri.port)
         if uri.scheme == "https"
@@ -53,7 +58,7 @@ module CodeClimate
         end
       end
 
-      def self.post_results(result)
+      def post_results(result)
         uri = URI.parse("#{host}/test_reports")
         http = Net::HTTP.new(uri.host, uri.port)
 
@@ -92,7 +97,7 @@ module CodeClimate
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
           print "Sending report to #{API.host}... "
-          API.post_results(payload)
+          API.new.post_results(payload)
         end
 
         puts "done."
