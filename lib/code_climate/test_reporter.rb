@@ -1,10 +1,3 @@
-require "json"
-require "digest/sha1"
-require "net/https"
-require "uri"
-require "tmpdir"
-require "securerandom"
-
 module CodeClimate
   module TestReporter
     VERSION = "0.0.5"

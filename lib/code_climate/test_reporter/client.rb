@@ -1,3 +1,7 @@
+require "json"
+require "uri"
+require "net/https"
+
 module CodeClimate
   module TestReporter
 

@@ -1,3 +1,8 @@
+require "tmpdir"
+require "securerandom"
+require "json"
+require "digest/sha1"
+
 module CodeClimate
   module TestReporter
     class Formatter
