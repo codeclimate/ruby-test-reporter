@@ -1,1 +1,1 @@
-require 'codeclimate/test_reporter'
+require 'code_climate/test_reporter'
