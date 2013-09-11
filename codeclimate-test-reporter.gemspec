@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Collects test coverage data from your Ruby test suite and sends it to Code Climate's hosted, automated code review service. Based on SimpleCov.}
   spec.summary       = %q{Uploads Ruby test coverage data to Code Climate.}
   spec.homepage      = ""
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
