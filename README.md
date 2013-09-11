@@ -32,7 +32,7 @@ Please contact hello@codeclimate.com if you need any assistance setting this up.
 
 ## Contributions
 
-Patches, bug fixed, feature requests, and pull requests are welcome on the
+Patches, bug fixes, feature requests, and pull requests are welcome on the
 GitHub page for this project: [https://github.com/codeclimate/ruby-test-reporter](https://github.com/codeclimate/ruby-test-reporter)
 
 This gem is maintained by Bryan Helmkamp (bryan@codeclimate.com).
