@@ -30,6 +30,22 @@ Code Climate account if you are in the test coverage private beta.
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
+## Known Issues
+
+If you run a library like WebMock or VCR to capture network activity, you may have issues with the Gem reporting.
+
+We have found the following workarounds:
+
+VCR:
+
+        config.ignore_hosts 'codeclimate.com'
+
+WebMock:
+
+        WebMock.disable_net_connect!(:allow => "codeclimate.com")
+
+That will configure these libraries to allow Code Climate traffic through. If you are still having issues please let us know by leaving an issue on this repo or contacting hello@codeclimate.com. 
+
 ## Contributions
 
 Patches, bug fixes, feature requests, and pull requests are welcome on the
