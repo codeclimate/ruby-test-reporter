@@ -30,21 +30,26 @@ Code Climate account if you are in the test coverage private beta.
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
-## Known Issues
+## Help! Your gem is raising a ...
 
-If you run a library like WebMock or VCR to capture network activity, you may have issues with the Gem reporting.
+### VCR::Errors::UnhandledHTTPRequestError
 
-We have found the following workarounds:
+Add the following to your spec or test helper:
 
-VCR:
+        VCR.configure do |config|
+          # your existing configuration
+          config.ignore_hosts 'codeclimate.com'
+        end
 
-        config.ignore_hosts 'codeclimate.com'
+### WebMock::NetConnectNotAllowedError
 
-WebMock:
+Add the following to your spec or test helper:
 
         WebMock.disable_net_connect!(:allow => "codeclimate.com")
 
-That will configure these libraries to allow Code Climate traffic through. If you are still having issues please let us know by leaving an issue on this repo or contacting hello@codeclimate.com. 
+### Other communication failures
+
+If you are using a web stubbing library similar to VCR or WebMock which prevent external requests during test runs, you will need configure these libraries to allow Code Climate to make external requests.
 
 ## Contributions
 
