@@ -3,6 +3,8 @@ require "securerandom"
 require "json"
 require "digest/sha1"
 
+require "code_climate/test_reporter/exception_message"
+
 module CodeClimate
   module TestReporter
     class Formatter
@@ -23,11 +25,7 @@ module CodeClimate
         puts "done."
         true
       rescue => ex
-        puts "\nCode Climate encountered an exception: #{ex.class}"
-        puts ex.message
-        ex.backtrace.each do |line|
-          puts line
-        end
+        puts ExceptionMessage.new(ex).message
         false
       end
 
