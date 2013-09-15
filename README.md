@@ -3,8 +3,6 @@
 Collects test coverage data from your Ruby test suite and sends it to Code
 Climate's hosted, automated code review service. Based on SimpleCov.
 
-**Note:** Code Climate's test coverage functionality is currently in private beta. If you are interested in volunteering for the beta, please contact us at hello@codeclimate.com .
-
 Code Climate - [https://codeclimate.com](https://codeclimate.com)
 
 ## Installation
