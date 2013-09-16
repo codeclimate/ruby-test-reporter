@@ -49,6 +49,8 @@ STR
 Add the following to your spec or test helper to ensure codeclimate-test-reporter can post coverage results:"
           parts << "\n" + message.instructions + "\n"
           parts << "======"
+          parts << "If this doesn't work, please consult https://codeclimate.com/docs#test-coverage-troubleshooting"
+          parts << "======"
         else
           parts << @exception.message
           @exception.backtrace.each do |line|
