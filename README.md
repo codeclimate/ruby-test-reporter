@@ -1,5 +1,7 @@
 # codeclimate-test-reporter
 
+[![Code Climate](https://codeclimate.com/github/codeclimate/ruby-test-reporter.png)](https://codeclimate.com/github/codeclimate/ruby-test-reporter)
+
 Collects test coverage data from your Ruby test suite and sends it to Code
 Climate's hosted, automated code review service. Based on SimpleCov.
 
