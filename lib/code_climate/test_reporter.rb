@@ -1,6 +1,6 @@
 module CodeClimate
   module TestReporter
-    VERSION = "0.0.8"
+    VERSION = "0.0.9"
 
     def self.start
       if run?

@@ -18,7 +18,8 @@ module CodeClimate
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
           client = Client.new
-          print "Sending report to #{client.host}... "
+          computed_branch = compute_branch(payload)
+          print "Sending report to #{client.host} for branch #{computed_branch}... "
           client.post_results(payload)
         end
 
@@ -143,6 +144,19 @@ module CodeClimate
 
       def tddium?
         ci_service_data && ci_service_data[:name] == "tddium"
+      end
+
+      def compute_branch(payload)
+        git_branch = payload[:git][:branch]
+        ci_branch = payload[:ci_service][:branch]
+        
+        if ci_branch.present?
+          ci_branch.sub(/^origin\//, "")
+        elsif git_branch.present? && !git_branch.to_s.strip.starts_with?("(")
+          git_branch.sub(/^origin\//, "")
+        else
+          "master"
+        end
       end
     end
   end
