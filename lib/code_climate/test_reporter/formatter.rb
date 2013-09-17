@@ -150,9 +150,9 @@ module CodeClimate
         git_branch = payload[:git][:branch]
         ci_branch = payload[:ci_service][:branch]
         
-        if ci_branch
+        if ci_branch.to_s.strip.size > 0
           ci_branch.sub(/^origin\//, "")
-        elsif git_branch && !git_branch.to_s.strip.start_with?("(")
+        elsif git_branch.to_s.strip.size > 0 && !git_branch.to_s.strip.start_with?("(")
           git_branch.sub(/^origin\//, "")
         else
           "master"
