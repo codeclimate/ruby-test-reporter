@@ -7,6 +7,8 @@ module CodeClimate
 
     class Client
 
+      DEFAULT_TIMEOUT = 5 # in seconds
+
       def host
         ENV["CODECLIMATE_API_HOST"] ||
           "https://codeclimate.com"
@@ -69,8 +71,8 @@ module CodeClimate
             http.ca_file = File.expand_path('../../../../config/cacert.pem', __FILE__)
             http.verify_depth = 5
           end
-          http.open_timeout = 5 # in seconds
-          http.read_timeout = 5 # in seconds
+          http.open_timeout = DEFAULT_TIMEOUT # in seconds
+          http.read_timeout = DEFAULT_TIMEOUT # in seconds
         end
       end
 
