@@ -9,7 +9,7 @@ module CodeClimate
   module TestReporter
     class Formatter
       def format(result)
-        print "Coverage = #{result.covered_percent.round(2)}%. "
+        print "Coverage = #{round(result.covered_percent, 2)}%. "
 
         payload = to_payload(result)
         if tddium? || ENV["TO_FILE"]
@@ -45,8 +45,8 @@ module CodeClimate
             name:             short_filename(file.filename),
             blob_id:          calculate_blob_id(file.filename),
             coverage:         file.coverage.to_json,
-            covered_percent:  file.covered_percent.round(2),
-            covered_strength: file.covered_strength.round(2),
+            covered_percent:  round(file.covered_percent, 2),
+            covered_strength: round(file.covered_strength, 2),
             line_counts: {
               total:    file.lines.count,
               covered:  file.covered_lines.count,
@@ -59,8 +59,8 @@ module CodeClimate
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
           source_files:     source_files,
           run_at:           result.created_at,
-          covered_percent:  result.covered_percent.round(2),
-          covered_strength: result.covered_strength.round(2),
+          covered_percent:  round(result.covered_percent, 2),
+          covered_strength: round(result.covered_strength, 2),
           line_counts:      totals,
           partial:          partial?,
           git: {
@@ -149,7 +149,7 @@ module CodeClimate
       def compute_branch(payload)
         git_branch = payload[:git][:branch]
         ci_branch = payload[:ci_service][:branch]
-        
+
         if ci_branch.to_s.strip.size > 0
           ci_branch.sub(/^origin\//, "")
         elsif git_branch.to_s.strip.size > 0 && !git_branch.to_s.strip.start_with?("(")
@@ -157,6 +157,12 @@ module CodeClimate
         else
           "master"
         end
+      end
+
+      # Convert to Float before rounding.
+      # Fixes [#7] possible segmentation fault when calling #round on a Rational
+      def round(numeric, precision)
+        Float(numeric).round(precision)
       end
     end
   end
