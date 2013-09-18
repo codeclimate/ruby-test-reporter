@@ -9,12 +9,12 @@ module CodeClimate
   module TestReporter
     class Formatter
       def format(result)
-        print "Coverage = #{result.covered_percent.round(2)}%."
+        print "Coverage = #{result.covered_percent.round(2)}%. "
 
         payload = to_payload(result)
         if tddium? || ENV["TO_FILE"]
           file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
-          print "Coverage results saved to #{file_path}..."
+          print "Coverage results saved to #{file_path}... "
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
           client = Client.new
