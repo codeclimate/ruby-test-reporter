@@ -2,6 +2,7 @@ require "tmpdir"
 require "securerandom"
 require "json"
 require "digest/sha1"
+require "simplecov"
 
 require "code_climate/test_reporter/exception_message"
 
