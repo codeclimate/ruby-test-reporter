@@ -58,7 +58,7 @@ module CodeClimate
         {
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
           source_files:     source_files,
-          run_at:           result.created_at,
+          run_at:           result.created_at.to_i,
           covered_percent:  round(result.covered_percent, 2),
           covered_strength: round(result.covered_strength, 2),
           line_counts:      totals,
