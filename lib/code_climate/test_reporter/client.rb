@@ -50,7 +50,8 @@ module CodeClimate
 
         request = Net::HTTP::Post.new(uri.path)
         request["Content-Type"] = "application/json"
-        request.body = result.to_json
+        request["Content-Encoding"] = "gzip"
+        request.body = compress(result.to_json)
 
         response = http.request(request)
 
@@ -74,6 +75,14 @@ module CodeClimate
           http.open_timeout = DEFAULT_TIMEOUT # in seconds
           http.read_timeout = DEFAULT_TIMEOUT # in seconds
         end
+      end
+
+      def compress(str)
+        sio = StringIO.new("w")
+        gz = Zlib::GzipWriter.new(sio)
+        gz.write(str)
+        gz.close
+        sio.string
       end
 
     end
