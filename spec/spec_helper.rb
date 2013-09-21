@@ -23,6 +23,14 @@ class FakeCodeClimateEndpoint
   def request_body
     @env["rack.input"].string
   end
+
+  def content_type
+    @env["CONTENT_TYPE"]
+  end
+
+  def query_string
+    @env["QUERY_STRING"]
+  end
 end
 
 

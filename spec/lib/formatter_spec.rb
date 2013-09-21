@@ -91,6 +91,8 @@ module CodeClimate::TestReporter
         formatter.format(simplecov_result)
       end
       app.path_info.should == "/test_reports"
+      app.content_type.should == "application/json"
+      app.query_string.should == "repo_token=172754c1bf9a3c698f7770b9fb648f1ebb214425120022d0b2ffc65b97dff531"
       JSON.parse(app.request_body).should == expected_request
     end
   end

@@ -45,10 +45,10 @@ module CodeClimate
       end
 
       def post_results(result)
-        uri = URI.parse("#{host}/test_reports")
+        uri = URI.parse("#{host}/test_reports?repo_token=#{result[:repo_token]}")
         http = http_client(uri)
 
-        request = Net::HTTP::Post.new(uri.path)
+        request = Net::HTTP::Post.new(uri.request_uri)
         request["Content-Type"] = "application/json"
         request.body = result.to_json
 
