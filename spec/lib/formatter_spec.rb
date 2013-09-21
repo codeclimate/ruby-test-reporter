@@ -91,6 +91,7 @@ module CodeClimate::TestReporter
         formatter.format(simplecov_result)
       end
       app.path_info.should == "/test_reports"
+      app.content_type.should == "application/json"
       JSON.parse(app.request_body).should == expected_request
     end
   end
