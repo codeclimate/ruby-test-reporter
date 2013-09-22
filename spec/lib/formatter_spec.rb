@@ -95,6 +95,7 @@ module CodeClimate::TestReporter
       app.http_content_encoding.should == "gzip"
       uncompressed = inflate(app.request_body)
       JSON.parse(uncompressed).should == expected_request
+      app.http_user_agent.should include("v#{CodeClimate::TestReporter::VERSION}")
     end
   end
 end

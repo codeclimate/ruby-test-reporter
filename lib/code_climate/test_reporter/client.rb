@@ -8,6 +8,7 @@ module CodeClimate
     class Client
 
       DEFAULT_TIMEOUT = 5 # in seconds
+      USER_AGENT      = "Code Climate (Ruby Test Reporter v#{VERSION})"
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||
@@ -33,6 +34,7 @@ module CodeClimate
         end
         post_body << "\r\n--#{boundary}--\r\n"
         request = Net::HTTP::Post.new(uri.request_uri)
+        request["User-Agent"] = USER_AGENT
         request.body = post_body.join
         request["Content-Type"] = "multipart/form-data, boundary=#{boundary}"
         response = http.request(request)
@@ -49,6 +51,7 @@ module CodeClimate
         http = http_client(uri)
 
         request = Net::HTTP::Post.new(uri.path)
+        request["User-Agent"] = USER_AGENT
         request["Content-Type"] = "application/json"
         request["Content-Encoding"] = "gzip"
         request.body = compress(result.to_json)

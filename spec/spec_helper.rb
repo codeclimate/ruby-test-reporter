@@ -37,6 +37,10 @@ class FakeCodeClimateEndpoint
   def http_content_encoding
     @env["HTTP_CONTENT_ENCODING"]
   end
+
+  def http_user_agent
+    @env["HTTP_USER_AGENT"]
+  end
 end
 
 
