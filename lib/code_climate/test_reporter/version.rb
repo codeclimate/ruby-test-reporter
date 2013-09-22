@@ -1,5 +1,5 @@
 module CodeClimate
   module TestReporter
-    VERSION = "0.0.11"
+    VERSION = "0.1.0"
   end
 end
