@@ -50,11 +50,15 @@ module CodeClimate
         uri = URI.parse("#{host}/test_reports")
         http = http_client(uri)
 
+        http.set_debug_output($stderr)
+
         request = Net::HTTP::Post.new(uri.path)
         request["User-Agent"] = USER_AGENT
         request["Content-Type"] = "application/json"
         request["Content-Encoding"] = "gzip"
         request.body = compress(result.to_json)
+
+        puts "About to post #{request.body.length} bytes"
 
         response = http.request(request)
 
