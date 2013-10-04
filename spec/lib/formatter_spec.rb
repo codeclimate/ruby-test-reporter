@@ -61,7 +61,7 @@ module CodeClimate::TestReporter
             "pwd" => Dir.pwd,
             "rails_root" => nil,
             "simplecov_root" => Dir.pwd,
-            "gem_version" => "0.0.11"
+            "gem_version" => VERSION
           },
         "ci_service" => {}
       }

@@ -26,7 +26,7 @@ module CodeClimate
     end
 
     def self.current_branch
-      `git symbolic-ref --short HEAD`.strip
+      Git.branch_from_git_or_ci
     end
 
     def self.show_warnings?
