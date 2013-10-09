@@ -6,7 +6,7 @@ module CodeClimate
         require "simplecov"
         ::SimpleCov.add_filter 'vendor'
         ::SimpleCov.formatter = Formatter
-        ::SimpleCov.start("test_frameworks")
+        ::SimpleCov.start(ENV["CODECLIMATE_SIMPLECOV_PROFILE"] || "test_frameworks")
       else
         puts("Not reporting to Code Climate because ENV['CODECLIMATE_REPO_TOKEN'] is not set.")
       end
