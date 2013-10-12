@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'logger'
 
 module CodeClimate::TestReporter
   describe Configuration do
@@ -8,8 +9,9 @@ module CodeClimate::TestReporter
       end
 
       it 'provides defaults' do
-        expect(CodeClimate::TestReporter.configuration.show_warnings).to be_true
         expect(CodeClimate::TestReporter.configuration.branch).to be_nil
+        expect(CodeClimate::TestReporter.configuration.logger).to be_instance_of Logger
+        expect(CodeClimate::TestReporter.configuration.logger.level).to eq Logger::INFO
       end
     end
 
@@ -18,12 +20,15 @@ module CodeClimate::TestReporter
         CodeClimate::TestReporter.configure
       end
 
-      it 'stores show_warnings' do
+      it 'stores logger' do
+        logger = Logger.new($stderr)
+
         CodeClimate::TestReporter.configure do |config|
-          config.show_warnings = false
+          logger.level = Logger::DEBUG
+          config.logger = logger
         end
 
-        expect(CodeClimate::TestReporter.configuration.show_warnings).to be_false
+        expect(CodeClimate::TestReporter.configuration.logger).to eq logger
       end
 
       it 'stores branch' do

@@ -17,11 +17,19 @@ module CodeClimate
     end
 
     class Configuration
-      attr_accessor :branch, :show_warnings
+      attr_accessor :branch, :logger
 
-      def show_warnings
-        @show_warnings = true if @show_warnings.nil?
-        @show_warnings
+      def logger
+        @logger ||= default_logger
+      end
+
+      private
+
+      def default_logger
+        log = Logger.new($stderr)
+        log.level = Logger::INFO
+
+        log
       end
     end
 

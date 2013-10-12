@@ -21,6 +21,14 @@ describe CodeClimate::TestReporter do
 
       expect(CodeClimate::TestReporter.run_on_current_branch?).to be_false
     end
+
+    it 'logs a message if false' do
+      expect_any_instance_of(Logger).to receive(:info)
+      allow(CodeClimate::TestReporter).to receive(:current_branch).and_return("another-branch")
+      allow(CodeClimate::TestReporter).to receive(:configured_branch).and_return(:master)
+
+      CodeClimate::TestReporter.run_on_current_branch?
+    end
   end
 
 end
