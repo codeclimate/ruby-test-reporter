@@ -17,10 +17,14 @@ module CodeClimate
     end
 
     class Configuration
-      attr_accessor :branch, :logger
+      attr_accessor :branch, :logger, :profile
 
       def logger
         @logger ||= default_logger
+      end
+
+      def profile
+        @profile ||= (ENV["CODECLIMATE_SIMPLECOV_PROFILE"] || "test_frameworks")
       end
 
       private

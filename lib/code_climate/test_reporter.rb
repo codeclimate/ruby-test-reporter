@@ -6,7 +6,7 @@ module CodeClimate
         require "simplecov"
         ::SimpleCov.add_filter 'vendor'
         ::SimpleCov.formatter = Formatter
-        ::SimpleCov.start(ENV["CODECLIMATE_SIMPLECOV_PROFILE"] || "test_frameworks")
+        ::SimpleCov.start(configuration.profile)
       end
     end
 

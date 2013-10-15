@@ -12,6 +12,7 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.branch).to be_nil
         expect(CodeClimate::TestReporter.configuration.logger).to be_instance_of Logger
         expect(CodeClimate::TestReporter.configuration.logger.level).to eq Logger::INFO
+        expect(CodeClimate::TestReporter.configuration.profile).to eq('test_frameworks')
       end
     end
 
@@ -37,6 +38,35 @@ module CodeClimate::TestReporter
         end
 
         expect(CodeClimate::TestReporter.configuration.branch).to eq :master
+      end
+
+      it 'stores profile' do
+        CodeClimate::TestReporter.configure do |config|
+          config.profile = 'custom'
+        end
+
+        expect(CodeClimate::TestReporter.configuration.profile).to eq('custom')
+      end
+    end
+
+    describe 'profile' do
+      context 'when the CODECLIMATE_SIMPLECOV_PROFILE environment variable is set' do
+        before do
+          ENV['CODECLIMATE_SIMPLECOV_PROFILE'] = 'custom'
+          CodeClimate::TestReporter.configure
+        end
+
+        it 'uses the variable over the default' do
+          expect(CodeClimate::TestReporter.configuration.profile).to eq('custom')
+        end
+
+        it 'uses the custom value over the variable' do
+          CodeClimate::TestReporter.configure do |config|
+            config.profile = 'provided'
+          end
+
+          expect(CodeClimate::TestReporter.configuration.profile).to eq('provided')
+        end
       end
     end
   end
