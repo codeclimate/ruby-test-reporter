@@ -19,8 +19,7 @@ module CodeClimate
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
         else
           client = Client.new
-          computed_branch = compute_branch(payload)
-          print "Sending report to #{client.host} for branch #{computed_branch}... "
+          print "Sending report to #{client.host} for branch #{Git.branch_from_git_or_ci}... "
           client.post_results(payload)
         end
 
@@ -64,11 +63,7 @@ module CodeClimate
           covered_strength: round(result.covered_strength, 2),
           line_counts:      totals,
           partial:          partial?,
-          git: {
-            head:         `git log -1 --pretty=format:'%H'`,
-            committed_at: committed_at,
-            branch:       git_branch,
-          },
+          git: Git.info,
           environment: {
             test_framework: result.command_name.downcase,
             pwd:            Dir.pwd,
@@ -78,46 +73,6 @@ module CodeClimate
           },
           ci_service: ci_service_data
         }
-      end
-
-      def ci_service_data
-        if ENV['TRAVIS']
-          {
-            name:             "travis-ci",
-            branch:           ENV['TRAVIS_BRANCH'],
-            build_identifier: ENV['TRAVIS_JOB_ID'],
-            pull_request:     ENV['TRAVIS_PULL_REQUEST']
-          }
-        elsif ENV['CIRCLECI']
-          {
-            name:             "circlci",
-            build_identifier: ENV['CIRCLE_BUILD_NUM'],
-            branch:           ENV['CIRCLE_BRANCH'],
-            commit_sha:       ENV['CIRCLE_SHA1']
-          }
-        elsif ENV['SEMAPHORE']
-          {
-            name:             "semaphore",
-            branch:           ENV['BRANCH_NAME'],
-            build_identifier: ENV['SEMAPHORE_BUILD_NUMBER']
-          }
-        elsif ENV['JENKINS_URL']
-          {
-            name:             "jenkins",
-            build_identifier: ENV['BUILD_NUMBER'],
-            build_url:        ENV['BUILD_URL'],
-            branch:           ENV['GIT_BRANCH'],
-            commit_sha:       ENV['GIT_COMMIT']
-          }
-        elsif ENV['TDDIUM']
-          {
-            name:             "tddium",
-            build_identifier: ENV['TDDIUM_SESSION_ID'],
-            worker_id:        ENV['TDDIUM_TID']
-          }
-        else
-          {}
-        end
       end
 
       def calculate_blob_id(path)
@@ -132,38 +87,20 @@ module CodeClimate
         filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
       end
 
-      def committed_at
-        committed_at = `git log -1 --pretty=format:'%ct'`
-        committed_at.to_i.zero? ? nil : committed_at.to_i
-      end
-
-      def git_branch
-        branch = `git branch`.split("\n").delete_if { |i| i[0] != "*" }
-        branch = [branch].flatten.first
-        branch ? branch.gsub("* ","") : nil
-      end
-
       def tddium?
         ci_service_data && ci_service_data[:name] == "tddium"
-      end
-
-      def compute_branch(payload)
-        git_branch = payload[:git][:branch]
-        ci_branch = payload[:ci_service][:branch]
-
-        if ci_branch.to_s.strip.size > 0
-          ci_branch.sub(/^origin\//, "")
-        elsif git_branch.to_s.strip.size > 0 && !git_branch.to_s.strip.start_with?("(")
-          git_branch.sub(/^origin\//, "")
-        else
-          "master"
-        end
       end
 
       # Convert to Float before rounding.
       # Fixes [#7] possible segmentation fault when calling #round on a Rational
       def round(numeric, precision)
         Float(numeric).round(precision)
+      end
+
+      private
+
+      def ci_service_data
+        @ci_service_data ||= Ci.service_data
       end
     end
   end
