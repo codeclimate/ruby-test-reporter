@@ -31,20 +31,16 @@ Code Climate account if you are in the test coverage private beta.
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
 ## Configuration
-By default the reporter will run on every branch, and log messages to $stderr with a log level of Logger::INFO.
-These can be overridden with a configure block.
+
+Certain behaviors of the test reporter can be configured. See the `Configuration`
+class for more details. For example, you can change the logging level to not
+print info messages:
 
 *Note that the configuration block must come before TestReporter.start.*
 
 ```ruby
 CodeClimate::TestReporter.configure do |config|
-  config.branch = :master
-
-  # set a custom level
   config.logger.level = Logger::WARN
-
-  # use a custom logger
-  config.logger = MyCoolLogger.new
 end
 
 CodeClimate::TestReporter.start
