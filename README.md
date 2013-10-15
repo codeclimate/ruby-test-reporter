@@ -30,6 +30,23 @@ Code Climate account if you are in the test coverage private beta.
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
+## Configuration
+
+Certain behaviors of the test reporter can be configured. See the `Configuration`
+class for more details. For example, you can change the logging level to not
+print info messages:
+
+*Note that the configuration block must come before TestReporter.start.*
+
+```ruby
+CodeClimate::TestReporter.configure do |config|
+  config.logger.level = Logger::WARN
+end
+
+CodeClimate::TestReporter.start
+```
+
+
 ## Help! Your gem is raising a ...
 
 ### VCR::Errors::UnhandledHTTPRequestError
