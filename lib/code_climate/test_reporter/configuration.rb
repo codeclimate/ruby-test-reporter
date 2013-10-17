@@ -1,3 +1,5 @@
+require 'logger'
+
 module CodeClimate
   module TestReporter
     @@configuration = nil
