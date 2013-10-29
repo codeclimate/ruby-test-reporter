@@ -24,7 +24,7 @@ module CodeClimate
       end
 
       def profile
-        @profile ||= (ENV["CODECLIMATE_SIMPLECOV_PROFILE"] || "test_frameworks")
+        @profile ||= "test_frameworks"
       end
 
       private

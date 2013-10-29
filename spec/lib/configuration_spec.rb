@@ -48,26 +48,5 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.profile).to eq('custom')
       end
     end
-
-    describe 'profile' do
-      context 'when the CODECLIMATE_SIMPLECOV_PROFILE environment variable is set' do
-        before do
-          ENV['CODECLIMATE_SIMPLECOV_PROFILE'] = 'custom'
-          CodeClimate::TestReporter.configure
-        end
-
-        it 'uses the variable over the default' do
-          expect(CodeClimate::TestReporter.configuration.profile).to eq('custom')
-        end
-
-        it 'uses the custom value over the variable' do
-          CodeClimate::TestReporter.configure do |config|
-            config.profile = 'provided'
-          end
-
-          expect(CodeClimate::TestReporter.configuration.profile).to eq('provided')
-        end
-      end
-    end
   end
 end
