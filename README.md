@@ -14,7 +14,7 @@ first step is to create an account at: [https://codeclimate.com](https://codecli
 
 1. Add this to your Gemfile:
 
-        gem install "codeclimate-test-reporter", group: :test
+        gem "codeclimate-test-reporter", group: :test
 
 1. Start the test reporter **on the very first line** of your `test_helper.rb` or
   `spec_helper.rb` file:
