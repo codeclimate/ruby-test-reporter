@@ -8,10 +8,10 @@ module CodeClimate::TestReporter
     let(:formatter) { Formatter.new }
     let(:files) {
       [
-        mock(
-          :lines            => [mock, mock, mock],
-          :covered_lines    => [mock, mock],
-          :missed_lines     => [mock],
+        double(
+          :lines            => [double, double, double],
+          :covered_lines    => [double, double],
+          :missed_lines     => [double],
           :filename         => project_file,
           :coverage         => [0,3,2,nil],
           :covered_percent  => 33.2,
@@ -21,7 +21,7 @@ module CodeClimate::TestReporter
     }
 
     let(:simplecov_result) {
-      mock(
+      double(
         :covered_percent  => 24.3,
         :covered_strength => 33.2,
         :files            => files,
