@@ -84,7 +84,8 @@ module CodeClimate
 
       def short_filename(filename)
         return filename unless ::SimpleCov.root
-        filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
+        filename = filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
+        apply_prefix filename
       end
 
       def tddium?
@@ -98,6 +99,12 @@ module CodeClimate
       end
 
       private
+
+      def apply_prefix filename
+        prefix = CodeClimate::TestReporter.configuration.path_prefix
+        return filename if prefix.nil?
+        "#{prefix}/#{filename}"
+      end
 
       def ci_service_data
         @ci_service_data ||= Ci.service_data

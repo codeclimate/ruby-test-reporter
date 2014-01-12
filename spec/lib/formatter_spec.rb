@@ -98,4 +98,22 @@ module CodeClimate::TestReporter
       app.http_user_agent.should include("v#{CodeClimate::TestReporter::VERSION}")
     end
   end
+
+  describe '#short_filename' do
+    it 'should return the filename of the file relative to the SimpleCov root' do
+      CodeClimate::TestReporter::Formatter.new.short_filename('file1').should == 'file1'
+      CodeClimate::TestReporter::Formatter.new.short_filename("#{::SimpleCov.root}/file1").should == 'file1'
+    end
+
+    it 'should include the path prefix if set' do
+      CodeClimate::TestReporter.configure do |config|
+        config.path_prefix = 'custom'
+      end
+      CodeClimate::TestReporter::Formatter.new.short_filename('file1').should == 'custom/file1'
+      CodeClimate::TestReporter::Formatter.new.short_filename("#{::SimpleCov.root}/file1").should == 'custom/file1'
+      CodeClimate::TestReporter.configure do |config|
+        config.path_prefix = nil
+      end
+    end
+  end
 end

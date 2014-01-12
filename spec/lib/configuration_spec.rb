@@ -13,6 +13,7 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.logger).to be_instance_of Logger
         expect(CodeClimate::TestReporter.configuration.logger.level).to eq Logger::INFO
         expect(CodeClimate::TestReporter.configuration.profile).to eq('test_frameworks')
+        expect(CodeClimate::TestReporter.configuration.path_prefix).to be_nil
       end
     end
 
@@ -46,6 +47,19 @@ module CodeClimate::TestReporter
         end
 
         expect(CodeClimate::TestReporter.configuration.profile).to eq('custom')
+      end
+
+      it 'stores path prefix' do
+        CodeClimate::TestReporter.configure do |config|
+          config.path_prefix = 'custom'
+        end
+
+        expect(CodeClimate::TestReporter.configuration.path_prefix).to eq('custom')
+
+        CodeClimate::TestReporter.configure do |config|
+          config.path_prefix = nil
+        end
+
       end
     end
   end
