@@ -1,13 +1,15 @@
 module CodeClimate
   module TestReporter
+    def self.start(*formatters, &block)
+      require "simplecov"
 
-    def self.start
-      if run?
-        require "simplecov"
-        ::SimpleCov.add_filter 'vendor'
-        ::SimpleCov.formatter = Formatter
-        ::SimpleCov.start(configuration.profile)
-      end
+      ::SimpleCov.configure(&block) if block_given?
+      ::SimpleCov.add_filter 'vendor'
+
+      formatters << Formatter if run?
+
+      ::SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[*formatters]
+      ::SimpleCov.start configuration.profile
     end
 
     def self.run?
