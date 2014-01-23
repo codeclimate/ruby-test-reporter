@@ -5,6 +5,7 @@ require "digest/sha1"
 require "simplecov"
 
 require "code_climate/test_reporter/exception_message"
+require "code_climate/test_reporter/payload_validator"
 
 module CodeClimate
   module TestReporter
@@ -13,6 +14,7 @@ module CodeClimate
         print "Coverage = #{round(result.covered_percent, 2)}%. "
 
         payload = to_payload(result)
+        PayloadValidator.validate(payload)
         if tddium? || ENV["TO_FILE"]
           file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
           print "Coverage results saved to #{file_path}... "
