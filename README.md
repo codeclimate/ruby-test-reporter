@@ -9,8 +9,8 @@ Code Climate - [https://codeclimate.com](https://codeclimate.com)
 
 ## Installation
 
-This gem only works with Code Climate accounts, so if you don't have one the
-first step is to create an account at: [https://codeclimate.com](https://codeclimate.com). Then:
+This gem requires a user, but not necessarily a paid account, on Code Climate, so if you don't have one the
+first step is to signup at: [https://codeclimate.com](https://codeclimate.com). Then:
 
 1. Add this to your Gemfile:
 
