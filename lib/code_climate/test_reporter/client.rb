@@ -46,15 +46,20 @@ module CodeClimate
         end
       end
 
-      def post_results(result)
+      def post_results(result, options = { :gzip => true })
         uri = URI.parse("#{host}/test_reports")
         http = http_client(uri)
 
         request = Net::HTTP::Post.new(uri.path)
         request["User-Agent"] = USER_AGENT
         request["Content-Type"] = "application/json"
-        request["Content-Encoding"] = "gzip"
-        request.body = compress(result.to_json)
+
+        if options[:gzip]
+          request["Content-Encoding"] = "gzip"
+          request.body = compress(result.to_json)
+        else
+          request.body = result.to_json
+        end
 
         response = http.request(request)
 

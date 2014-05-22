@@ -10,7 +10,7 @@ require "code_climate/test_reporter/payload_validator"
 module CodeClimate
   module TestReporter
     class Formatter
-      def format(result)
+      def format(result, options = { :gzip_request => true })
         print "Coverage = #{round(result.covered_percent, 2)}%. "
 
         payload = to_payload(result)
@@ -22,7 +22,7 @@ module CodeClimate
         else
           client = Client.new
           print "Sending report to #{client.host} for branch #{Git.branch_from_git_or_ci}... "
-          client.post_results(payload)
+          client.post_results(payload, { :gzip => options[:gzip_request] })
         end
 
         puts "done."
