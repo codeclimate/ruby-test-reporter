@@ -19,7 +19,11 @@ module CodeClimate
     end
 
     class Configuration
-      attr_accessor :branch, :logger, :profile, :path_prefix
+      attr_accessor :branch, :logger, :profile, :path_prefix, :gzip_request
+
+      def initialize
+        @gzip_request = true
+      end
 
       def logger
         @logger ||= default_logger
