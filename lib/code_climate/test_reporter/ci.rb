@@ -43,7 +43,7 @@ module CodeClimate
             build_identifier: ENV['WERCKER_BUILD_ID'],
             build_url:        ENV['WERCKER_BUILD_URL'],
             branch:           ENV['WERCKER_GIT_BRANCH'],
-            commit_sha:       ENV['WERCKER_GIT_COMMIT'],
+            commit_sha:       ENV['WERCKER_GIT_COMMIT']
           }
         elsif ENV['CI_NAME'] =~ /codeship/i
           {
