@@ -37,6 +37,14 @@ module CodeClimate
             build_identifier: ENV['TDDIUM_SESSION_ID'],
             worker_id:        ENV['TDDIUM_TID']
           }
+        elsif ENV['WERCKER']
+          {
+            name:             "wercker",
+            build_identifier: ENV['WERCKER_BUILD_ID'],
+            build_url:        ENV['WERCKER_BUILD_URL'],
+            branch:           ENV['WERCKER_GIT_BRANCH'],
+            commit_sha:       ENV['WERCKER_GIT_COMMIT']
+          }
         elsif ENV['CI_NAME'] =~ /codeship/i
           {
             name:             "codeship",
