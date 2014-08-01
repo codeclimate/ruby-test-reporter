@@ -11,6 +11,8 @@ module CodeClimate
   module TestReporter
     class Formatter
       def format(result)
+        return true unless CodeClimate::TestReporter.run?
+
         print "Coverage = #{round(result.covered_percent, 2)}%. "
 
         payload = to_payload(result)

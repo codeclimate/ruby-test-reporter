@@ -86,33 +86,47 @@ module CodeClimate::TestReporter
     end
 
     it "sends an http request with all the coverage information" do
+      allow(CodeClimate::TestReporter).to receive(:run?).and_return(true)
+
       app = FakeCodeClimateEndpoint.new
       Artifice.activate_with(app) do
         formatter.format(simplecov_result)
       end
-      app.path_info.should == "/test_reports"
-      app.content_type.should == "application/json"
-      app.http_content_encoding.should == "gzip"
+
+      expect(app.path_info).to eq("/test_reports")
+      expect(app.content_type).to eq("application/json")
+      expect(app.http_content_encoding).to eq("gzip")
+
       uncompressed = inflate(app.request_body)
-      JSON.parse(uncompressed).should == expected_request
-      app.http_user_agent.should include("v#{CodeClimate::TestReporter::VERSION}")
+
+      expect(JSON.parse(uncompressed)).to eq(expected_request)
+      expect(app.http_user_agent).to include("v#{CodeClimate::TestReporter::VERSION}")
     end
   end
 
   describe '#short_filename' do
+    let(:formatter) { CodeClimate::TestReporter::Formatter.new }
     it 'should return the filename of the file relative to the SimpleCov root' do
-      CodeClimate::TestReporter::Formatter.new.short_filename('file1').should == 'file1'
-      CodeClimate::TestReporter::Formatter.new.short_filename("#{::SimpleCov.root}/file1").should == 'file1'
+      expect(formatter.short_filename('file1')).to eq('file1')
+      expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('file1')
     end
 
-    it 'should include the path prefix if set' do
-      CodeClimate::TestReporter.configure do |config|
-        config.path_prefix = 'custom'
+    context "with path prefix" do
+      before do
+        CodeClimate::TestReporter.configure do |config|
+          config.path_prefix = 'custom'
+        end
       end
-      CodeClimate::TestReporter::Formatter.new.short_filename('file1').should == 'custom/file1'
-      CodeClimate::TestReporter::Formatter.new.short_filename("#{::SimpleCov.root}/file1").should == 'custom/file1'
-      CodeClimate::TestReporter.configure do |config|
-        config.path_prefix = nil
+
+      after do
+        CodeClimate::TestReporter.configure do |config|
+          config.path_prefix = nil
+        end
+      end
+
+      it 'should include the path prefix if set' do
+        expect(formatter.short_filename('file1')).to eq('custom/file1')
+        expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('custom/file1')
       end
     end
   end
