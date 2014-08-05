@@ -46,6 +46,20 @@ end
 CodeClimate::TestReporter.start
 ```
 
+## Extending Simplecov with other formatters
+
+Since ruby-test-reporter 0.4.0 you can use `CodeClimate::TestReporter::Formatter` as a Simplecov formatter directly. Just add the formatter to your Simplecov formatter in addition to the rest of your configuration:
+
+```ruby
+require 'codeclimate-test-reporter'
+SimpleCov.start do
+  formatter SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    CodeClimate::TestReporter::Formatter
+  ]
+  ...
+end
+```
 
 ## Help! Your gem is raising a ...
 
