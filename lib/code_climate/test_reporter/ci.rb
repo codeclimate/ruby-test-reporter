@@ -45,6 +45,15 @@ module CodeClimate
             branch:           ENV['WERCKER_GIT_BRANCH'],
             commit_sha:       ENV['WERCKER_GIT_COMMIT']
           }
+        elsif ENV['CI_NAME'] =~ /DRONE/i
+          {
+            name:             "drone",
+            build_identifier: ENV['CI_BUILD_NUMBER'],
+            build_url:        ENV['CI_BUILD_URL'],
+            branch:           ENV['CI_BRANCH'],
+            commit_sha:       ENV['CI_BUILD_NUMBER'],
+            pull_request:     ENV['CI_PULL_REQUEST']
+          }
         elsif ENV['CI_NAME'] =~ /codeship/i
           {
             name:             "codeship",
