@@ -61,6 +61,30 @@ SimpleCov.start do
 end
 ```
 
+## Using with [parallel_tests](https://github.com/grosser/parallel_tests)
+
+Note: This may work with other parallel test runners as long as they run on the same machine.
+
+Be sure you're using `simplecov` `>= 0.9.0`. 
+
+Add the following to your `test_helper.rb`/`spec_helper.rb` instead of what is normally required.
+
+```ruby
+require 'simplecov'
+require 'codeclimate-test-reporter'
+SimpleCov.add_filter 'vendor'
+SimpleCov.formatters = []
+SimpleCov.start CodeClimate::TestReporter.configuration.profile
+```
+
+Then after all your tests run, in a rake task or as a build step do:
+
+```
+require 'simplecov'
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
+```
+
 ## Help! Your gem is raising a ...
 
 ### VCR::Errors::UnhandledHTTPRequestError
