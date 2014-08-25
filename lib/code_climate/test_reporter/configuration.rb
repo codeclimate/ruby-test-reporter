@@ -33,6 +33,10 @@ module CodeClimate
         @profile ||= "test_frameworks"
       end
 
+      def skip_token
+        @skip_token ||= "nocov"
+      end
+
       private
 
       def default_logger
