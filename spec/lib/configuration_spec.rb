@@ -14,6 +14,7 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.logger.level).to eq Logger::INFO
         expect(CodeClimate::TestReporter.configuration.profile).to eq('test_frameworks')
         expect(CodeClimate::TestReporter.configuration.path_prefix).to be_nil
+        expect(CodeClimate::TestReporter.configuration.skip_token).to eq('nocov')
       end
     end
 
