@@ -6,6 +6,12 @@ module CodeClimate::TestReporter
     let(:project_path) { "spec/tmp" }
     let(:project_file) { "fake_project.rb" }
     let(:formatter) { Formatter.new }
+    let(:source_files) {
+      double(
+        :covered_percent  => 24.3,
+        :covered_strength => 33.2,
+      )
+    }
     let(:files) {
       [
         double(
@@ -25,6 +31,7 @@ module CodeClimate::TestReporter
         :covered_percent  => 24.3,
         :covered_strength => 33.2,
         :files            => files,
+        :source_files     => source_files,
         :created_at       => Time.at(1379704336),
         :command_name     => "rspec"
       )

@@ -13,7 +13,7 @@ module CodeClimate
       def format(result)
         return true unless CodeClimate::TestReporter.run?
 
-        print "Coverage = #{round(result.covered_percent, 2)}%. "
+        print "Coverage = #{result.source_files.covered_percent.round(2)}%. "
 
         payload = to_payload(result)
         PayloadValidator.validate(payload)
@@ -63,8 +63,8 @@ module CodeClimate
           repo_token:       ENV["CODECLIMATE_REPO_TOKEN"],
           source_files:     source_files,
           run_at:           result.created_at.to_i,
-          covered_percent:  round(result.covered_percent, 2),
-          covered_strength: round(result.covered_strength, 2),
+          covered_percent:  result.source_files.covered_percent.round(2),
+          covered_strength: result.source_files.covered_strength.round(2),
           line_counts:      totals,
           partial:          partial?,
           git: Git.info,
