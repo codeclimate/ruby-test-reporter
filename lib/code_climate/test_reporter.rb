@@ -7,7 +7,7 @@ module CodeClimate
         ::SimpleCov.add_filter 'vendor'
         ::SimpleCov.formatter = Formatter
         ::SimpleCov.start(configuration.profile) do
-          skip_token configuration.skip_token
+          skip_token CodeClimate::TestReporter.configuration.skip_token
         end
       end
     end
