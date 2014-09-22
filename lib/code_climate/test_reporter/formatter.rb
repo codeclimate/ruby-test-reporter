@@ -80,7 +80,7 @@ module CodeClimate
       end
 
       def calculate_blob_id(path)
-        content = File.open(path, "rb") {|f| f.read }
+        content = File.open(path, "rb", encoding: "UTF-8:UTF-8") {|f| f.read }
         header = "blob #{content.length}\0"
         store = header + content
         Digest::SHA1.hexdigest(store)
