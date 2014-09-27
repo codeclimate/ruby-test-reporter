@@ -70,7 +70,6 @@ module CodeClimate::TestReporter
             "simplecov_root" => Dir.pwd,
             "gem_version" => VERSION
           },
-        "ci_service" => {}
       }
     }
 
@@ -106,7 +105,9 @@ module CodeClimate::TestReporter
 
       uncompressed = inflate(app.request_body)
 
+      expected_request.merge!("ci_service" => Ci.service_data)
       expect(JSON.parse(uncompressed)).to eq(expected_request)
+
       expect(app.http_user_agent).to include("v#{CodeClimate::TestReporter::VERSION}")
     end
 
