@@ -1,6 +1,6 @@
-# encoding: utf-8
+# encoding: iso-8859-1
 class EncodingTest
   def foo
-    "Ã¤"
+    "ä"
   end
 end
