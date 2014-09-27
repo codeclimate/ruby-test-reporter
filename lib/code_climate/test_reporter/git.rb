@@ -12,16 +12,21 @@ module CodeClimate
         end
 
         def branch_from_git_or_ci
-          git_branch = branch_from_git
-          ci_branch = Ci.service_data[:branch]
+          clean_service_branch || clean_git_branch || "master"
+        end
 
-          if ci_branch.to_s.strip.size > 0
-            ci_branch.sub(/^origin\//, "")
-          elsif git_branch.to_s.strip.size > 0 && !git_branch.to_s.strip.start_with?("(")
-            git_branch.sub(/^origin\//, "")
-          else
-            "master"
-          end
+        def clean_service_branch
+          ci_branch = String(Ci.service_data[:branch])
+          clean = ci_branch.strip.sub(/^origin\//, "")
+
+          clean.size > 0 ? clean : nil
+        end
+
+        def clean_git_branch
+          git_branch = String(branch_from_git)
+          clean = git_branch.sub(/^origin\//, "") unless git_branch.start_with?("(")
+
+          clean.size > 0 ? clean : nil
         end
 
         private
@@ -32,9 +37,7 @@ module CodeClimate
         end
 
         def branch_from_git
-          branch = `git branch`.split("\n").delete_if { |i| i[0] != "*" }
-          branch = [branch].flatten.first
-          branch ? branch.gsub("* ","") : nil
+          `git rev-parse --abbrev-ref HEAD`.chompt
         end
       end
     end
