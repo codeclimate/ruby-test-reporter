@@ -37,7 +37,7 @@ module CodeClimate
         end
 
         def branch_from_git
-          `git rev-parse --abbrev-ref HEAD`.chompt
+          `git rev-parse --abbrev-ref HEAD`.chomp
         end
       end
     end
