@@ -106,8 +106,9 @@ module CodeClimate::TestReporter
       uncompressed = inflate(app.request_body)
 
       expected_request.merge!("ci_service" => Ci.service_data)
-      expect(JSON.parse(uncompressed)).to eq(expected_request)
+      expected_json = JSON.parse(expected_request.to_json, symbolize_names: true)
 
+      expect(JSON.parse(uncompressed, symbolize_names: true)).to eq(expected_json)
       expect(app.http_user_agent).to include("v#{CodeClimate::TestReporter::VERSION}")
     end
 
