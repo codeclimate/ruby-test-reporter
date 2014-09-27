@@ -5,15 +5,11 @@ module CodeClimate::TestReporter
 
     describe '.service_data' do
       before :each do
-        ENV['SEMAPHORE'] = 'yes?'
-        ENV['BRANCH_NAME'] = 'master'
-        ENV['SEMAPHORE_BUILD_NUMBER'] = '1234'
-      end
-
-      after :each do
-        ENV.delete('SEMAPHORE')
-        ENV.delete('BRANCH_NAME')
-        ENV.delete('SEMAPHORE_BUILD_NUMBER')
+        @env = {
+          'SEMAPHORE' => 'yes?',
+          'BRANCH_NAME' => 'master',
+          'SEMAPHORE_BUILD_NUMBER' => '1234'
+        }
       end
 
       it 'returns a hash of CI environment info' do
@@ -23,9 +19,8 @@ module CodeClimate::TestReporter
           build_identifier: '1234'
         }
 
-        expect(Ci.service_data).to include expected_semaphore_hash
+        expect(Ci.service_data(@env)).to include expected_semaphore_hash
       end
     end
-
   end
 end
