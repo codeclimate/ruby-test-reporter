@@ -24,7 +24,7 @@ module CodeClimate::TestReporter
       it 'returns the branch from git if there is no ci branch' do
         allow(Ci).to receive(:service_data).and_return({})
 
-        expect(Git.branch_from_git_or_ci).to eq Git.send(:branch_from_git)
+        expect(Git.branch_from_git_or_ci).to eq Git.clean_git_branch
       end
 
       it 'returns master otherwise' do

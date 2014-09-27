@@ -70,7 +70,6 @@ module CodeClimate::TestReporter
             "simplecov_root" => Dir.pwd,
             "gem_version" => VERSION
           },
-        "ci_service" => {}
       }
     }
 
@@ -106,34 +105,46 @@ module CodeClimate::TestReporter
 
       uncompressed = inflate(app.request_body)
 
-      expect(JSON.parse(uncompressed)).to eq(expected_request)
+      expected_request.merge!("ci_service" => Ci.service_data)
+      expected_json = JSON.parse(expected_request.to_json, symbolize_names: true)
+
+      expect(JSON.parse(uncompressed, symbolize_names: true)).to eq(expected_json)
       expect(app.http_user_agent).to include("v#{CodeClimate::TestReporter::VERSION}")
     end
-  end
 
-  describe '#short_filename' do
-    let(:formatter) { CodeClimate::TestReporter::Formatter.new }
-    it 'should return the filename of the file relative to the SimpleCov root' do
-      expect(formatter.short_filename('file1')).to eq('file1')
-      expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('file1')
+    describe '#short_filename' do
+      it 'should return the filename of the file relative to the SimpleCov root' do
+        expect(formatter.short_filename('file1')).to eq('file1')
+        expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('file1')
+      end
+
+      context "with path prefix" do
+        before do
+          CodeClimate::TestReporter.configure do |config|
+            config.path_prefix = 'custom'
+          end
+        end
+
+        after do
+          CodeClimate::TestReporter.configure do |config|
+            config.path_prefix = nil
+          end
+        end
+
+        it 'should include the path prefix if set' do
+          expect(formatter.short_filename('file1')).to eq('custom/file1')
+          expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('custom/file1')
+        end
+      end
     end
 
-    context "with path prefix" do
-      before do
-        CodeClimate::TestReporter.configure do |config|
-          config.path_prefix = 'custom'
-        end
-      end
+    describe "#calculate_blob_id" do
+      it "forces UTF-8 as encoding for the file content" do
+        blob_id = formatter.calculate_blob_id(File.expand_path("../../fixtures/encoding_test_iso.rb", __FILE__))
+        expect(blob_id).to_not be_nil
 
-      after do
-        CodeClimate::TestReporter.configure do |config|
-          config.path_prefix = nil
-        end
-      end
-
-      it 'should include the path prefix if set' do
-        expect(formatter.short_filename('file1')).to eq('custom/file1')
-        expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('custom/file1')
+        blob_id = formatter.calculate_blob_id(File.expand_path("../../fixtures/encoding_test.rb", __FILE__))
+        expect(blob_id).to_not be_nil
       end
     end
   end

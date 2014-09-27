@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "tmpdir"
 require "securerandom"
 require "json"
@@ -80,10 +82,13 @@ module CodeClimate
       end
 
       def calculate_blob_id(path)
-        content = File.open(path, "rb") {|f| f.read }
-        header = "blob #{content.length}\0"
-        store = header + content
-        Digest::SHA1.hexdigest(store)
+        File.open(path, "rb") do |file|
+          header  = "blob #{file.size}\0"
+          content = file.read.force_encoding("iso-8859-1").encode("utf-8", replace: nil)
+          store   = header + content
+
+          return Digest::SHA1.hexdigest(store)
+        end
       end
 
       def short_filename(filename)
