@@ -6,7 +6,7 @@ module CodeClimate::TestReporter
       it 'returns a hash with git information.' do
         expected_git_hash = {
           head: `git log -1 --pretty=format:'%H'`,
-          committed_at: `git log -1 --pretty=format:'%ct'`.to_i,
+          committed_at: `git log -1 --pretty=format:%ct`.to_i,
           branch: Git.send(:branch_from_git)
         }
 

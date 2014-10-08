@@ -32,7 +32,7 @@ module CodeClimate
         private
 
         def committed_at
-          committed_at = `git log -1 --pretty=format:'%ct'`
+          committed_at = `git log -1 --pretty=format:%ct`
           committed_at.to_i.zero? ? nil : committed_at.to_i
         end
 
