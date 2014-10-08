@@ -45,6 +45,15 @@ module CodeClimate
             branch:           env['WERCKER_GIT_BRANCH'],
             commit_sha:       env['WERCKER_GIT_COMMIT']
           }
+        elsif env['APPVEYOR']
+          {
+            name:             "appveyor",
+            build_identifier: env['APPVEYOR_BUILD_ID'],
+            build_url:        env['APPVEYOR_API_URL'],
+            branch:           env['APPVEYOR_REPO_BRANCH'],
+            commit_sha:       env['APPVEYOR_REPO_COMMIT'],
+            pull_request:     env['APPVEYOR_PULL_REQUEST_NUMBER']
+          }
         elsif env['CI_NAME'] =~ /DRONE/i
           {
             name:             "drone",
