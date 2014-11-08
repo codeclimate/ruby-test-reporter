@@ -137,15 +137,5 @@ module CodeClimate::TestReporter
         end
       end
     end
-
-    describe "#calculate_blob_id" do
-      it "forces UTF-8 as encoding for the file content" do
-        blob_id = formatter.calculate_blob_id(File.expand_path("../../fixtures/encoding_test_iso.rb", __FILE__))
-        expect(blob_id).to_not be_nil
-
-        blob_id = formatter.calculate_blob_id(File.expand_path("../../fixtures/encoding_test.rb", __FILE__))
-        expect(blob_id).to_not be_nil
-      end
-    end
   end
 end
