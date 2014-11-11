@@ -8,7 +8,7 @@ module CodeClimate
       end
 
       def blob_id
-        calculate_with_file || calculate_with_git
+        calculate_with_file or calculate_with_git
       end
 
     private
@@ -22,10 +22,15 @@ module CodeClimate
           return Digest::SHA1.hexdigest(store)
         end
       rescue EncodingError
+        puts "WARNING: Unable to read #{@file_path}\nUsing git for blob calculation"
+        nil
       end
 
       def calculate_with_git
-        Kernel.system("git hash-object -t blob #{@file_path}")
+        output = `git hash-object -t blob #{@file_path}`.chomp
+        raise 'ERROR: Failed to calculate blob with git' unless $?.success?
+
+        output
       end
 
     end
