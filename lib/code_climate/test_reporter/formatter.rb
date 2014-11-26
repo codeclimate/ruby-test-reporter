@@ -49,7 +49,7 @@ module CodeClimate
 
           {
             name:             short_filename(file.filename),
-            blob_id:          calculate_blob_id(file.filename),
+            blob_id:          CalculateBlob.new(file.filename).blob_id,
             coverage:         file.coverage.to_json,
             covered_percent:  round(file.covered_percent, 2),
             covered_strength: round(file.covered_strength, 2),
@@ -81,15 +81,6 @@ module CodeClimate
         }
       end
 
-      def calculate_blob_id(path)
-        File.open(path, "rb") do |file|
-          header  = "blob #{file.size}\0"
-          content = file.read.force_encoding("iso-8859-1").encode("utf-8", replace: nil)
-          store   = header + content
-
-          return Digest::SHA1.hexdigest(store)
-        end
-      end
 
       def short_filename(filename)
         return filename unless ::SimpleCov.root
