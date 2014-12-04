@@ -62,6 +62,14 @@ module CodeClimate
             branch:           env['CI_BRANCH'],
             commit_sha:       env['CI_COMMIT_ID'],
           }
+        elsif env['BUILDBOX']
+          {
+            name:             "buildbox",
+            build_identifier: env['BUILDBOX_JOB_ID'],
+            build_url:        env['BUILDBOX_BUILD_URL'],
+            branch:           env['BUILDBOX_BRANCH'],
+            commit_sha:       env['BUILDBOX_COMMIT']
+          }
         else
           {}
         end
