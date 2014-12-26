@@ -5,7 +5,7 @@ module CodeClimate
       class << self
         def info
           {
-            head:         `git log -1 --pretty=format:'%H'`,
+            head:         head,
             committed_at: committed_at,
             branch:       branch_from_git,
           }
@@ -31,15 +31,28 @@ module CodeClimate
 
         private
 
+        def head
+          git("log -1 --pretty=format:'%H'")
+        end
+
         def committed_at
-          committed_at = `git log -1 --pretty=format:%ct`
+          committed_at = git('log -1 --pretty=format:%ct')
           committed_at.to_i.zero? ? nil : committed_at.to_i
         end
 
         def branch_from_git
-          `git rev-parse --abbrev-ref HEAD`.chomp
+          git('rev-parse --abbrev-ref HEAD').chomp
+        end
+
+        def git(command)
+          `git --git-dir=#{git_dir}/.git #{command}`
+        end
+
+        def git_dir
+          defined?(Rails) ? Rails.root : '.'
         end
       end
     end
   end
 end
+
