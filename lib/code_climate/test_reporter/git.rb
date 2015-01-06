@@ -1,7 +1,6 @@
 module CodeClimate
   module TestReporter
     class Git
-      require "pathname"
 
       class << self
         def info
@@ -52,7 +51,7 @@ module CodeClimate
         def git_dir
           root = "."
 
-          if defined?(Rails) && Pathname(Rails.root).expand_path(".git").directory?
+          if defined?(Rails) && File.directory?(File.expand_path(".git", Rails.root))
             root = Rails.root
           end
 
