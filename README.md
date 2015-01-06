@@ -46,6 +46,17 @@ end
 CodeClimate::TestReporter.start
 ```
 
+Another example for when your Rails application root is not at the root of the git repository root
+
+```ruby
+CodeClimate::TestReporter.configure do |config|
+  config.path_prefix = "app_root" #the root of your Rails application relative to the repository root
+  config.git_dir = "../" #the relative or absolute location of your git root compared to where your tests are run
+end
+
+CodeClimate::TestReporter.start
+```
+
 ## Extending Simplecov with other formatters
 
 Since ruby-test-reporter 0.4.0 you can use `CodeClimate::TestReporter::Formatter` as a Simplecov formatter directly. Just add the formatter to your Simplecov formatter in addition to the rest of your configuration:
