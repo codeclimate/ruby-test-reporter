@@ -49,6 +49,7 @@ module CodeClimate
         end
 
         def git_dir
+          return CodeClimate::TestReporter.configuration.git_dir unless CodeClimate::TestReporter.configuration.git_dir.nil?
           defined?(Rails) ? Rails.root : '.'
         end
       end
