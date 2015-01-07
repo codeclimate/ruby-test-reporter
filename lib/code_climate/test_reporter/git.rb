@@ -49,6 +49,8 @@ module CodeClimate
         end
 
         def git_dir
+          return CodeClimate::TestReporter.configuration.git_dir unless CodeClimate::TestReporter.configuration.git_dir.nil?
+
           root = "."
 
           if defined?(Rails) && File.directory?(File.expand_path(".git", Rails.root))
