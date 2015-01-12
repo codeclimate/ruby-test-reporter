@@ -15,6 +15,7 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.profile).to eq('test_frameworks')
         expect(CodeClimate::TestReporter.configuration.path_prefix).to be_nil
         expect(CodeClimate::TestReporter.configuration.skip_token).to eq('nocov')
+        expect(CodeClimate::TestReporter.configuration.timeout).to eq(Client::DEFAULT_TIMEOUT)
       end
     end
 
@@ -60,7 +61,14 @@ module CodeClimate::TestReporter
         CodeClimate::TestReporter.configure do |config|
           config.path_prefix = nil
         end
+      end
 
+      it 'stores timeout' do
+        CodeClimate::TestReporter.configure do |config|
+          config.timeout = 666
+        end
+
+        expect(CodeClimate::TestReporter.configuration.timeout).to eq(666)
       end
     end
   end

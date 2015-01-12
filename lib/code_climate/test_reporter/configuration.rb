@@ -21,7 +21,7 @@ module CodeClimate
     class Configuration
       attr_accessor :branch, :path_prefix, :gzip_request, :git_dir
 
-      attr_writer :logger, :profile
+      attr_writer :logger, :profile, :timeout
 
       def initialize
         @gzip_request = true
@@ -37,6 +37,10 @@ module CodeClimate
 
       def skip_token
         @skip_token ||= "nocov"
+      end
+
+      def timeout
+        @timeout ||= Client::DEFAULT_TIMEOUT
       end
 
       private
