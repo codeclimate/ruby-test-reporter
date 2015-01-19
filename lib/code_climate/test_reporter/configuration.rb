@@ -19,7 +19,9 @@ module CodeClimate
     end
 
     class Configuration
-      attr_accessor :branch, :logger, :profile, :path_prefix, :gzip_request, :git_dir
+      attr_accessor :branch, :path_prefix, :gzip_request, :git_dir
+
+      attr_writer :logger, :profile
 
       def initialize
         @gzip_request = true
