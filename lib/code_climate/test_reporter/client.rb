@@ -80,8 +80,8 @@ module CodeClimate
             http.ca_file = File.expand_path('../../../../config/cacert.pem', __FILE__)
             http.verify_depth = 5
           end
-          http.open_timeout = DEFAULT_TIMEOUT # in seconds
-          http.read_timeout = DEFAULT_TIMEOUT # in seconds
+          http.open_timeout = CodeClimate::TestReporter.configuration.timeout
+          http.read_timeout = CodeClimate::TestReporter.configuration.timeout
         end
       end
 
