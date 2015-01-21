@@ -49,17 +49,20 @@ module CodeClimate
         end
 
         def git_dir
-          return CodeClimate::TestReporter.configuration.git_dir unless CodeClimate::TestReporter.configuration.git_dir.nil?
+          return configured_git_dir unless configured_git_dir.nil?
+          rails_git_dir_present? ? Rails.root : '.'
+        end
 
-          root = "."
+        def configured_git_dir
+          CodeClimate::TestReporter.configuration.git_dir
+        end
 
-          if defined?(Rails) && File.directory?(File.expand_path(".git", Rails.root))
-            root = Rails.root
-          end
-
-          root
+        def rails_git_dir_present?
+          defined?(Rails) && !Rails.root.nil? &&
+            File.directory?(File.expand_path('.git', Rails.root))
         end
       end
     end
   end
 end
+
