@@ -14,6 +14,17 @@ module CodeClimate::TestReporter
       end
     end
 
+    describe 'git' do
+      it 'should quote the git repository directory' do
+        path = '/path/to/foo bar'
+
+        allow(CodeClimate::TestReporter.configuration).to receive(:git_dir).and_return path
+        expect(Git).to receive(:`).once.with "git --git-dir=\"#{path}/.git\" help"
+
+        Git.send :git, 'help'
+        end
+    end
+
     describe 'branch_from_git_or_ci' do
       it 'returns the branch from ci' do
         allow(Ci).to receive(:service_data).and_return({branch: 'ci-branch'})
