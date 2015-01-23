@@ -45,7 +45,7 @@ module CodeClimate
         end
 
         def git(command)
-          `git --git-dir=#{git_dir}/.git #{command}`
+          `git --git-dir="#{git_dir}"/.git #{command}`
         end
 
         def git_dir
