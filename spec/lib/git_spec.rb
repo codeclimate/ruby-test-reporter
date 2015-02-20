@@ -22,7 +22,40 @@ module CodeClimate::TestReporter
         expect(Git).to receive(:`).once.with "git --git-dir=\"#{path}/.git\" help"
 
         Git.send :git, 'help'
+      end
+
+      context 'ensure logic that replies on Rails is robust in non-rails environments' do
+        before :all do
+          module ::Rails; end
         end
+
+        after :all do
+          Object.send(:remove_const, :Rails)
+        end
+
+        after :each do
+          Git.send :git, 'help'
+        end
+
+        it 'will check if constant Rails is defined' do
+          expect(Git).to receive(:configured_git_dir).once.and_return(nil)
+        end
+
+        it 'will not rails root if constant Rails is defined but does not respond to root' do
+          expect(Git).to receive(:configured_git_dir).once.and_return(nil)
+          expect(Rails).to receive(:root).twice.and_return('/path')
+        end
+
+        it 'will call rails root if constant Rails is defined and root method is defined' do
+          module ::Rails
+            def self.root
+              '/path'
+            end
+          end
+          expect(Git).to receive(:configured_git_dir).once.and_return(nil)
+          expect(Rails).to receive(:root).twice.and_return('/path')
+        end
+      end
     end
 
     describe 'branch_from_git_or_ci' do
