@@ -41,7 +41,7 @@ module CodeClimate::TestReporter
           expect(Git).to receive(:configured_git_dir).once.and_return(nil)
         end
 
-        it 'will not rails root if constant Rails is defined but does not respond to root' do
+        it 'will not call method "root" (a 3rd time) if constant Rails is defined but does not respond to root' do
           expect(Git).to receive(:configured_git_dir).once.and_return(nil)
           expect(Rails).to receive(:root).twice.and_return('/path')
         end
