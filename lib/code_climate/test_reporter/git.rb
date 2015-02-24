@@ -58,7 +58,7 @@ module CodeClimate
         end
 
         def rails_git_dir_present?
-          defined?(Rails) && !Rails.root.nil? &&
+          const_defined?(:Rails) && Rails.respond_to?(:root) && !Rails.root.nil? &&
             File.directory?(File.expand_path('.git', Rails.root))
         end
       end
