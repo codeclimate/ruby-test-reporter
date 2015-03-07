@@ -96,6 +96,8 @@ require 'codeclimate-test-reporter'
 CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
 ```
 
+Note this [doesn't currently work](https://circleci.com/docs/code-coverage#code-climate) with CircleCI's parallelization. If you want this please help by letting them know.
+
 ## Help! Your gem is raising a ...
 
 ### VCR::Errors::UnhandledHTTPRequestError
