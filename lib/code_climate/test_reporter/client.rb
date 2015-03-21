@@ -17,33 +17,8 @@ module CodeClimate
 
       def batch_post_results(files)
         return if files.size == 0
-        file, content = unify_simplecov(files)
-        uri = URI.parse("#{host}/test_reports/batch")
-        http = http_client(uri)
-
-        boundary = SecureRandom.uuid
-        post_body = []
-        post_body << "--#{boundary}\r\n"
-        post_body << "Content-Disposition: form-data; name=\"repo_token\"\r\n"
-        post_body << "\r\n"
-        post_body << ENV["CODECLIMATE_REPO_TOKEN"]
-        post_body << "\r\n--#{boundary}\r\n"
-        post_body << "Content-Disposition: form-data; name=\"coverage_reports[0]\"; filename=\"#{File.basename(file)}\"\r\n"
-        post_body << "Content-Type: application/json\r\n"
-        post_body << "\r\n"
-        post_body << content
-        post_body << "\r\n--#{boundary}--\r\n"
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request["User-Agent"] = USER_AGENT
-        request.body = post_body.join
-        request["Content-Type"] = "multipart/form-data, boundary=#{boundary}"
-        response = http.request(request)
-
-        if response.code.to_i >= 200 && response.code.to_i < 300
-          response
-        else
-          raise "HTTP Error: #{response.code}"
-        end
+        content = unify_simplecov(files)
+        post_results(content)
       end
 
       def post_results(result)
@@ -74,7 +49,7 @@ module CodeClimate
 
       # turn 10 files into 1 file with the sum of all coverages
       def unify_simplecov(coverage_files)
-        return [coverage_files.first, File.read(coverage_files.first)] if coverage_files.size == 1
+        return JSON.load(File.read(coverage_files.first)) if coverage_files.size == 1
 
         combined = coverage_files.shift
         puts "Unifying #{coverage_files.size + 1} files into #{combined}"
@@ -84,7 +59,7 @@ module CodeClimate
           merge_source_files(report, JSON.load(File.read(file)).fetch("source_files"))
         end
         recalculate_counters(report)
-        [combined, report.to_json]
+        report
       end
 
       def recalculate_counters(report)
