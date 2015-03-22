@@ -18,8 +18,9 @@ module CodeClimate::TestReporter
           :lines            => [double, double, double],
           :covered_lines    => [double, double],
           :missed_lines     => [double],
+          :skipped_lines    => [double(:line_number => 5), double(:line_number => 6)],
           :filename         => project_file,
-          :coverage         => [0,3,2,nil],
+          :coverage         => [0,3,2,nil,1,0],
           :covered_percent  => 33.2,
           :covered_strength => 2
         )
@@ -45,7 +46,7 @@ module CodeClimate::TestReporter
             {
               "name" => project_file,
               "blob_id" => "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-              "coverage" => "[0,3,2,null]",
+              "coverage" => "[0,3,2,null,null,null]",
               "covered_percent" => 33.2,
               "covered_strength" => 2.0,
               "line_counts" => {"total"=>3, "covered"=>2, "missed"=>1}
