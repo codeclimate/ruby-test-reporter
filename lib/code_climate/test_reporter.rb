@@ -20,8 +20,8 @@ module CodeClimate
       return @environment_variable_set if defined?(@environment_variable_set)
 
       @environment_variable_set = !!ENV["CODECLIMATE_REPO_TOKEN"]
-      unless @environment_variable_set
-        logger.info("Not reporting to Code Climate because ENV['CODECLIMATE_REPO_TOKEN'] is not set.")
+      if @environment_variable_set
+        logger.info("Reporting coverage data to Code Climate.")
       end
 
       @environment_variable_set
