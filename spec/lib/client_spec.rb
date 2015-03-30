@@ -20,5 +20,21 @@ module CodeClimate::TestReporter
 
       Client.new.post_results("")
     end
+
+    describe "#batch_post_results" do
+      let(:uuid) { "my-uuid" }
+      let(:token) { ENV["CODECLIMATE_REPO_TOKEN"] }
+
+      before { expect(SecureRandom).to receive(:uuid).and_return uuid }
+      around { |test| Dir.mktmpdir { |dir| Dir.chdir(dir, &test) } }
+
+      it "posts a single file" do
+        File.write("a", "Something")
+        requests = capture_requests(stub_request(:post, "http://cc.dev/test_reports/batch"))
+        Client.new.batch_post_results(["a"])
+
+        expect(requests.first.body).to eq "--#{uuid}\r\nContent-Disposition: form-data; name=\"repo_token\"\r\n\r\n#{token}\r\n--#{uuid}\r\nContent-Disposition: form-data; name=\"coverage_reports[0]\"; filename=\"a\"\r\nContent-Type: application/json\r\n\r\nSomething\r\n--#{uuid}--\r\n"
+      end
+    end
   end
 end

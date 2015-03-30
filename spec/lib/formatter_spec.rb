@@ -94,22 +94,16 @@ module CodeClimate::TestReporter
     it "sends an http request with all the coverage information" do
       allow(CodeClimate::TestReporter).to receive(:run?).and_return(true)
 
-      app = FakeCodeClimateEndpoint.new
-      Artifice.activate_with(app) do
-        formatter.format(simplecov_result)
-      end
+      stub = stub_request(:post, "http://cc.dev/test_reports").
+        with(:headers => {'Content-Encoding'=>'gzip', 'Content-Type'=>'application/json', 'User-Agent'=>"Code Climate (Ruby Test Reporter v#{CodeClimate::TestReporter::VERSION})"})
+      requests = capture_requests(stub)
 
-      expect(app.path_info).to eq("/test_reports")
-      expect(app.content_type).to eq("application/json")
-      expect(app.http_content_encoding).to eq("gzip")
+      formatter.format(simplecov_result)
 
-      uncompressed = inflate(app.request_body)
-
+      uncompressed = inflate(requests.first.body)
       expected_request.merge!("ci_service" => Ci.service_data)
       expected_json = JSON.parse(expected_request.to_json, symbolize_names: true)
-
       expect(JSON.parse(uncompressed, symbolize_names: true)).to eq(expected_json)
-      expect(app.http_user_agent).to include("v#{CodeClimate::TestReporter::VERSION}")
     end
 
     describe '#short_filename' do

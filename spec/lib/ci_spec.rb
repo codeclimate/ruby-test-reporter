@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module CodeClimate::TestReporter
   describe Ci do
-
     describe '.service_data' do
       before :each do
         @env = {
