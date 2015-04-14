@@ -19,34 +19,9 @@ module CodeClimate
       # N.B. Only works with in tandem with additional communication from
       # Solano.
       def batch_post_results(files)
-        uri = URI.parse("#{host}/test_reports/batch")
-        http = http_client(uri)
-
-        boundary = SecureRandom.uuid
-        post_body = []
-        post_body << "--#{boundary}\r\n"
-        post_body << "Content-Disposition: form-data; name=\"repo_token\"\r\n"
-        post_body << "\r\n"
-        post_body << ENV["CODECLIMATE_REPO_TOKEN"]
-        files.each_with_index do |file, index|
-          post_body << "\r\n--#{boundary}\r\n"
-          post_body << "Content-Disposition: form-data; name=\"coverage_reports[#{index}]\"; filename=\"#{File.basename(file)}\"\r\n"
-          post_body << "Content-Type: application/json\r\n"
-          post_body << "\r\n"
-          post_body << File.read(file)
-        end
-        post_body << "\r\n--#{boundary}--\r\n"
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request["User-Agent"] = USER_AGENT
-        request.body = post_body.join
-        request["Content-Type"] = "multipart/form-data, boundary=#{boundary}"
-        response = http.request(request)
-
-        if response.code.to_i >= 200 && response.code.to_i < 300
-          response
-        else
-          raise "HTTP Error: #{response.code}"
-        end
+        return if files.size == 0
+        content = unify_simplecov(files)
+        post_results(content)
       end
 
       def post_results(result)
@@ -74,6 +49,60 @@ module CodeClimate
       end
 
     private
+
+      # turn 10 files into 1 file with the sum of all coverages
+      def unify_simplecov(coverage_files)
+        return JSON.load(File.read(coverage_files.first)) if coverage_files.size == 1
+
+        combined = coverage_files.shift
+        puts "Unifying #{coverage_files.size + 1} files into #{combined}"
+
+        report = JSON.load(File.read(combined))
+        coverage_files.each do |file|
+          merge_source_files(report, JSON.load(File.read(file)).fetch("source_files"))
+        end
+        recalculate_counters(report)
+        report
+      end
+
+      def recalculate_counters(report)
+        source_files = report.fetch("source_files").map { |s| s["line_counts"] }
+        report["line_counts"].keys.each do |k|
+          report["line_counts"][k] = source_files.map { |s| s[k] }.inject(:+)
+        end
+      end
+
+      def merge_source_files(report, source_files)
+        all = report.fetch("source_files")
+        source_files.each do |new_file|
+          old_file = all.detect { |source_file| source_file["name"] == new_file["name"] }
+
+          if old_file
+            # merge source files
+            coverage = merge_coverage(
+              JSON.load(new_file.fetch("coverage")),
+              JSON.load(old_file.fetch("coverage"))
+            )
+            old_file["coverage"] = JSON.dump(coverage)
+
+            total = coverage.size
+            missed, covered = coverage.compact.partition { |l| l == 0 }.map(&:size)
+            old_file["covered_percent"] = (covered == 0 ? 0.0 : covered * 100.0 / (covered + missed))
+            old_file["line_counts"] = {"total" => total, "covered" => covered, "missed" => missed}
+          else
+            # just use the new value
+            all << new_file
+          end
+        end
+      end
+
+      # [nil,1,0] + [nil,nil,2] -> [nil,1,2]
+      def merge_coverage(a,b)
+        b.map! do |b_count|
+          a_count = a.shift
+          (!b_count && !a_count) ? nil : b_count.to_i + a_count.to_i
+        end
+      end
 
       def http_client(uri)
         Net::HTTP.new(uri.host, uri.port).tap do |http|
