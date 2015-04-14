@@ -84,7 +84,7 @@ module CodeClimate
 
             total = coverage.size
             missed, covered = coverage.compact.partition { |l| l == 0 }.map(&:size)
-            old_file["covered_percent"] = covered * 100.0 / (covered + missed)
+            old_file["covered_percent"] = (covered == 0 ? 0.0 : covered * 100.0 / (covered + missed))
             old_file["line_counts"] = {"total" => total, "covered" => covered, "missed" => missed}
           else
             # just use the new value
