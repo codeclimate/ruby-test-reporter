@@ -15,6 +15,9 @@ module CodeClimate
           "https://codeclimate.com"
       end
 
+      # N.B. Not a generalized solution for posting multiple results
+      # N.B. Only works with in tandem with additional communication from
+      # Solano.
       def batch_post_results(files)
         uri = URI.parse("#{host}/test_reports/batch")
         http = http_client(uri)
