@@ -114,6 +114,10 @@ CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
 
 ## Using with multiple machines
 
+For the time-being, we don't officially support coverage data from parallel test runs. That said, the following solution (codeclimate_batch) is a handy work-around that was created by one of our customers.
+
+Note that this solution requires standing up a separate server (like a Heroku instance) that sits between your testing environment and Code Climate. Though this option is not formally supported, if you have an immediate need for parallel testing support, codeclimate_batch is a helpful interim solution until we can release our official support for this.
+
 Use [codeclimate batch](https://github.com/grosser/codeclimate_batch)
 
 ## Help! Your gem is raising a ...
