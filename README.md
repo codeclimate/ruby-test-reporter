@@ -92,7 +92,7 @@ end
 
 Note: This may work with other parallel test runners as long as they run on the same machine.
 
-Be sure you're using `simplecov` `>= 0.9.0`. 
+Be sure you're using `simplecov` `>= 0.9.0`.
 
 Add the following to your `test_helper.rb`/`spec_helper.rb` instead of what is normally required.
 
@@ -111,6 +111,10 @@ require 'simplecov'
 require 'codeclimate-test-reporter'
 CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
 ```
+
+## Using with multiple machines
+
+Use [codeclimate batch](https://github.com/grosser/codeclimate_batch)
 
 ## Help! Your gem is raising a ...
 
