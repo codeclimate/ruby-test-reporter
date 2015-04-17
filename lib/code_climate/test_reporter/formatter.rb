@@ -19,7 +19,7 @@ module CodeClimate
 
         payload = to_payload(result)
         PayloadValidator.validate(payload)
-        if tddium? || ENV["TO_FILE"]
+        if write_to_file?
           file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
           print "Coverage results saved to #{file_path}... "
           File.open(file_path, "w") { |file| file.write(payload.to_json) }
@@ -35,6 +35,8 @@ module CodeClimate
         puts ExceptionMessage.new(ex).message
         false
       end
+
+    private
 
       def partial?
         tddium?
@@ -81,7 +83,6 @@ module CodeClimate
         }
       end
 
-
       def short_filename(filename)
         return filename unless ::SimpleCov.root
         filename = filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
@@ -98,7 +99,10 @@ module CodeClimate
         Float(numeric).round(precision)
       end
 
-      private
+      def write_to_file?
+        warn "TO_FILE is deprecated, use CODECLIMATE_TO_FILE" if ENV["TO_FILE"]
+        tddium? || ENV["CODECLIMATE_TO_FILE"] || ENV["TO_FILE"]
+      end
 
       def apply_prefix filename
         prefix = CodeClimate::TestReporter.configuration.path_prefix

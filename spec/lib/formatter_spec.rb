@@ -108,8 +108,8 @@ module CodeClimate::TestReporter
 
     describe '#short_filename' do
       it 'should return the filename of the file relative to the SimpleCov root' do
-        expect(formatter.short_filename('file1')).to eq('file1')
-        expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('file1')
+        expect(formatter.send(:short_filename, 'file1')).to eq('file1')
+        expect(formatter.send(:short_filename, "#{::SimpleCov.root}/file1")).to eq('file1')
       end
 
       context "with path prefix" do
@@ -126,8 +126,8 @@ module CodeClimate::TestReporter
         end
 
         it 'should include the path prefix if set' do
-          expect(formatter.short_filename('file1')).to eq('custom/file1')
-          expect(formatter.short_filename("#{::SimpleCov.root}/file1")).to eq('custom/file1')
+          expect(formatter.send(:short_filename, 'file1')).to eq('custom/file1')
+          expect(formatter.send(:short_filename, "#{::SimpleCov.root}/file1")).to eq('custom/file1')
         end
       end
     end
