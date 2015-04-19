@@ -36,6 +36,13 @@ module CodeClimate
         false
       end
 
+      # actually private ...
+      def short_filename(filename)
+        return filename unless ::SimpleCov.root
+        filename = filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
+        apply_prefix filename
+      end
+
     private
 
       def partial?
@@ -81,12 +88,6 @@ module CodeClimate
           },
           ci_service: ci_service_data
         }
-      end
-
-      def short_filename(filename)
-        return filename unless ::SimpleCov.root
-        filename = filename.gsub(::SimpleCov.root, '.').gsub(/^\.\//, '')
-        apply_prefix filename
       end
 
       def tddium?
