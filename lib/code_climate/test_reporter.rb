@@ -3,11 +3,17 @@ module CodeClimate
 
     def self.start
       if run?
+        test_runner_pid = Process.pid
         require "simplecov"
         ::SimpleCov.add_filter 'vendor'
         ::SimpleCov.formatter = Formatter
         ::SimpleCov.start(configuration.profile) do
           skip_token CodeClimate::TestReporter.configuration.skip_token
+        end
+        ::SimpleCov.at_exit do
+          if test_runner_pid == Process.pid
+            ::SimpleCov.result.format!
+          end
         end
       end
     end
