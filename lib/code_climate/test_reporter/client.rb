@@ -79,9 +79,13 @@ module CodeClimate
         Net::HTTP.new(uri.host, uri.port).tap do |http|
           if uri.scheme == "https"
             http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            http.ca_file = File.expand_path('../../../../config/cacert.pem', __FILE__)
-            http.verify_depth = 5
+            if ENV["CODECLIMATE_VERIFY_SSL"]=="false"
+              http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            else
+              http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+              http.ca_file = File.expand_path('../../../../config/cacert.pem', __FILE__)
+              http.verify_depth = 5
+            end
           end
           http.open_timeout = CodeClimate::TestReporter.configuration.timeout
           http.read_timeout = CodeClimate::TestReporter.configuration.timeout
