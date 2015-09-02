@@ -71,6 +71,15 @@ module CodeClimate
             branch:           env['CI_BRANCH'],
             commit_sha:       env['CI_COMMIT_ID'],
           }
+        elsif env['CI_NAME'] =~ /VEXOR/i
+          {
+            name:             'vexor',
+            build_identifier: env['CI_BUILD_NUMBER'],
+            build_url:        env['CI_BUILD_URL'],
+            branch:           env['CI_BRANCH'],
+            commit_sha:       env['CI_BUILD_SHA'],
+            pull_request:     env['CI_PULL_REQUEST_ID']
+          }
         elsif env['BUILDBOX']
           {
             name:             "buildbox",
