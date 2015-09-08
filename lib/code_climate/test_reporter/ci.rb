@@ -88,6 +88,13 @@ module CodeClimate
             branch:           env['BUILDKITE_BRANCH'],
             commit_sha:       env['BUILDKITE_COMMIT']
           }
+        elsif env['GITLAB_CI']
+          {
+            name:             "gitlab-ci",
+            build_identifier: env['CI_BUILD_ID'],
+            branch:           env['CI_BUILD_REF_NAME'],
+            commit_sha:       env['CI_BUILD_REF']
+          }
         else
           {}
         end
