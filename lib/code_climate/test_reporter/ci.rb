@@ -80,13 +80,13 @@ module CodeClimate
             commit_sha:       env['CI_BUILD_SHA'],
             pull_request:     env['CI_PULL_REQUEST_ID']
           }
-        elsif env['BUILDBOX']
+        elsif env['BUILDKITE']
           {
-            name:             "buildbox",
-            build_identifier: env['BUILDBOX_JOB_ID'],
-            build_url:        env['BUILDBOX_BUILD_URL'],
-            branch:           env['BUILDBOX_BRANCH'],
-            commit_sha:       env['BUILDBOX_COMMIT']
+            name:             "buildkite",
+            build_identifier: env['BUILDKITE_JOB_ID'],
+            build_url:        env['BUILDKITE_BUILD_URL'],
+            branch:           env['BUILDKITE_BRANCH'],
+            commit_sha:       env['BUILDKITE_COMMIT']
           }
         else
           {}
