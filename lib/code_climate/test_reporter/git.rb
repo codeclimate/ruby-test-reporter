@@ -5,9 +5,9 @@ module CodeClimate
       class << self
         def info
           {
-            head:         head,
-            committed_at: committed_at,
-            branch:       branch_from_git,
+            head:         ENV['GIT_HEAD'] || head,
+            committed_at: ENV['GIT_COMMITTED_AT'] || committed_at,
+            branch:       ENV['GIT_BRANCH_FROM'] || branch_from_git,
           }
         end
 
