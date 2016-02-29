@@ -1,4 +1,5 @@
 language: ruby
+group: stable
 before_script:
   - git config --global user.email "ci@codeclimate.com"
   - git config --global user.name "Code Climate CI"
