@@ -80,10 +80,10 @@ Since ruby-test-reporter 0.4.0 you can use `CodeClimate::TestReporter::Formatter
 ```ruby
 require 'codeclimate-test-reporter'
 SimpleCov.start do
-  formatter SimpleCov::Formatter::MultiFormatter[
+  formatter SimpleCov::Formatter::MultiFormatter.new([
     SimpleCov::Formatter::HTMLFormatter,
     CodeClimate::TestReporter::Formatter
-  ]
+  ])
   ...
 end
 ```
