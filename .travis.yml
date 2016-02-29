@@ -1,8 +1,0 @@
-language: ruby
-before_script:
-  - git config --global user.email "ci@codeclimate.com"
-  - git config --global user.name "Code Climate CI"
-rvm:
-  - 1.9.3
-  - 2.1.2
-  - jruby
