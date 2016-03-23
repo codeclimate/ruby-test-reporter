@@ -4,7 +4,6 @@ require "net/https"
 
 module CodeClimate
   module TestReporter
-
     class Client
 
       DEFAULT_TIMEOUT = 5 # in seconds
@@ -97,6 +96,5 @@ module CodeClimate
       end
 
     end
-
   end
 end

@@ -1,6 +1,5 @@
 module CodeClimate
   module TestReporter
-
     class CalculateBlob
 
       def initialize(file_path)
@@ -34,6 +33,5 @@ module CodeClimate
       end
 
     end
-
   end
 end

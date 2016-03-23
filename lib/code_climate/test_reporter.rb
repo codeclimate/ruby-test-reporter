@@ -1,6 +1,5 @@
 module CodeClimate
   module TestReporter
-
     def self.start
       if run?
         require "simplecov"
@@ -51,6 +50,5 @@ module CodeClimate
     def self.logger
       CodeClimate::TestReporter.configuration.logger
     end
-
   end
 end

@@ -52,6 +52,5 @@ module CodeClimate
         log
       end
     end
-
   end
 end
