@@ -8,7 +8,7 @@ module CodeClimate
     class Client
 
       DEFAULT_TIMEOUT = 5 # in seconds
-      USER_AGENT      = "Code Climate (Ruby Test Reporter v#{VERSION})"
+      USER_AGENT = "Code Climate (Ruby Test Reporter v#{VERSION})"
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||

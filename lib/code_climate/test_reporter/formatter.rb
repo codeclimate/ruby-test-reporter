@@ -52,9 +52,9 @@ module CodeClimate
       def to_payload(result)
         totals = Hash.new(0)
         source_files = result.files.map do |file|
-          totals[:total]      += file.lines.count
-          totals[:covered]    += file.covered_lines.count
-          totals[:missed]     += file.missed_lines.count
+          totals[:total] += file.lines.count
+          totals[:covered] += file.covered_lines.count
+          totals[:missed] += file.missed_lines.count
 
           # Set coverage for all skipped lines to nil
           file.skipped_lines.each do |skipped_line|
