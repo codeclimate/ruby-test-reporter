@@ -56,6 +56,11 @@ module CodeClimate
           totals[:covered]    += file.covered_lines.count
           totals[:missed]     += file.missed_lines.count
 
+          # Set coverage for all skipped lines to nil
+          file.skipped_lines.each do |skipped_line|
+            file.coverage[skipped_line.line_number - 1] = nil
+          end
+
           {
             name:             short_filename(file.filename),
             blob_id:          CalculateBlob.new(file.filename).blob_id,
