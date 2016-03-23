@@ -56,7 +56,7 @@ module CodeClimate
           totals[:covered]    += file.covered_lines.count
           totals[:missed]     += file.missed_lines.count
 
-          #if skipped line is not covered, its coverage needs to set to nil
+          # Set coverage for all skipped lines to nil
           file.skipped_lines.each do |skipped_line|
             file.coverage[skipped_line.line_number - 1] = nil
           end
