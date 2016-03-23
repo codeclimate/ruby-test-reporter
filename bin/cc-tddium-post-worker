@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'codeclimate-test-reporter'
-require 'tmpdir'
+require "codeclimate-test-reporter"
+require "tmpdir"
 
 if ENV["CODECLIMATE_REPO_TOKEN"]
   tmpdir = Dir.tmpdir

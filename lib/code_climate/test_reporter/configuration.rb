@@ -1,4 +1,4 @@
-require 'logger'
+require "logger"
 
 module CodeClimate
   module TestReporter
@@ -52,6 +52,5 @@ module CodeClimate
         log
       end
     end
-
   end
 end

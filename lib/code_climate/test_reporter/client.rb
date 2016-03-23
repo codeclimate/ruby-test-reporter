@@ -4,11 +4,10 @@ require "net/https"
 
 module CodeClimate
   module TestReporter
-
     class Client
 
       DEFAULT_TIMEOUT = 5 # in seconds
-      USER_AGENT      = "Code Climate (Ruby Test Reporter v#{VERSION})"
+      USER_AGENT = "Code Climate (Ruby Test Reporter v#{VERSION})"
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||
@@ -80,7 +79,7 @@ module CodeClimate
           if uri.scheme == "https"
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            http.ca_file = File.expand_path('../../../../config/cacert.pem', __FILE__)
+            http.ca_file = File.expand_path("../../../../config/cacert.pem", __FILE__)
             http.verify_depth = 5
           end
           http.open_timeout = CodeClimate::TestReporter.configuration.timeout
@@ -97,6 +96,5 @@ module CodeClimate
       end
 
     end
-
   end
 end

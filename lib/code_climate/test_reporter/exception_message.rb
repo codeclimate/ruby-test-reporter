@@ -1,6 +1,5 @@
 module CodeClimate
   module TestReporter
-
     class WebMockMessage
       def library_name
         "WebMock"

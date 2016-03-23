@@ -54,6 +54,5 @@ module CodeClimate
         @payload[:ci_service] && @payload[:ci_service][:commit_sha]
       end
     end
-
   end
 end
