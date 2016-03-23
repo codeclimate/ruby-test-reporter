@@ -4,7 +4,7 @@ module CodeClimate
     def self.start
       if run?
         require "simplecov"
-        ::SimpleCov.add_filter 'vendor'
+        ::SimpleCov.add_filter "vendor"
         ::SimpleCov.formatter = Formatter
         ::SimpleCov.start(configuration.profile) do
           skip_token CodeClimate::TestReporter.configuration.skip_token

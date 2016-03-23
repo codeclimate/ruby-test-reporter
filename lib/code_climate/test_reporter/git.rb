@@ -36,12 +36,12 @@ module CodeClimate
         end
 
         def committed_at
-          committed_at = git('log -1 --pretty=format:%ct')
+          committed_at = git("log -1 --pretty=format:%ct")
           committed_at.to_i.zero? ? nil : committed_at.to_i
         end
 
         def branch_from_git
-          git('rev-parse --abbrev-ref HEAD').chomp
+          git("rev-parse --abbrev-ref HEAD").chomp
         end
 
         def git(command)
@@ -50,7 +50,7 @@ module CodeClimate
 
         def git_dir
           return configured_git_dir unless configured_git_dir.nil?
-          rails_git_dir_present? ? Rails.root : '.'
+          rails_git_dir_present? ? Rails.root : "."
         end
 
         def configured_git_dir
@@ -59,7 +59,7 @@ module CodeClimate
 
         def rails_git_dir_present?
           const_defined?(:Rails) && Rails.respond_to?(:root) && !Rails.root.nil? &&
-            File.directory?(File.expand_path('.git', Rails.root))
+            File.directory?(File.expand_path(".git", Rails.root))
         end
       end
     end

@@ -28,7 +28,7 @@ module CodeClimate
 
       def calculate_with_git
         output = `git hash-object -t blob #{@file_path}`.chomp
-        raise 'ERROR: Failed to calculate blob with git' unless $?.success?
+        raise "ERROR: Failed to calculate blob with git" unless $?.success?
 
         output
       end
