@@ -42,6 +42,11 @@ Code Climate account by clicking on "Setup Test Coverage" on the right hand side
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
+#### Using webmock?
+Webmock will interfere with the reporting of codeclimate results. Fo fix, also add the following to your `spec_helper.rb`
+
+        WebMock.disable_net_connect!(allow: 'codeclimate.com')
+
 ## Configuration
 
 Certain behaviors of the test reporter can be configured. See the `Configuration`
@@ -128,12 +133,6 @@ Add the following to your spec or test helper:
           # your existing configuration
           config.ignore_hosts 'codeclimate.com'
         end
-
-### WebMock::NetConnectNotAllowedError
-
-Add the following to your spec or test helper:
-
-        WebMock.disable_net_connect!(:allow => "codeclimate.com")
 
 ### Other communication failures
 
