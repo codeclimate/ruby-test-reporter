@@ -12,7 +12,7 @@ module CodeClimate
           }
         elsif env["CIRCLECI"]
           {
-            name:             "circlci",
+            name:             "circleci",
             build_identifier: env["CIRCLE_BUILD_NUM"],
             branch:           env["CIRCLE_BRANCH"],
             commit_sha:       env["CIRCLE_SHA1"]
