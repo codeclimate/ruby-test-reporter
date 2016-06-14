@@ -60,7 +60,7 @@ module CodeClimate
             build_identifier: env["CI_BUILD_NUMBER"],
             build_url:        env["CI_BUILD_URL"],
             branch:           env["CI_BRANCH"],
-            commit_sha:       env["CI_BUILD_NUMBER"],
+            commit_sha:       env["CI_COMMIT"],
             pull_request:     env["CI_PULL_REQUEST"]
           }
         elsif env["CI_NAME"] =~ /codeship/i
