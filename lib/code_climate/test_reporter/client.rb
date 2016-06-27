@@ -79,7 +79,7 @@ module CodeClimate
           if uri.scheme == "https"
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            http.ca_file = File.expand_path("../../../../config/cacert.pem", __FILE__)
+            http.ca_file = ca_file
             http.verify_depth = 5
           end
           http.open_timeout = CodeClimate::TestReporter.configuration.timeout
@@ -95,6 +95,10 @@ module CodeClimate
         sio.string
       end
 
+      def ca_file
+        ENV["SSL_CERT_FILE"] ||
+          File.expand_path("../../../../config/cacert.pem", __FILE__)
+      end
     end
   end
 end
