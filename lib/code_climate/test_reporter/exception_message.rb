@@ -6,9 +6,9 @@ module CodeClimate
       end
 
       def instructions
-      <<-STR
+        <<-STR
   WebMock.disable_net_connect!(:allow => "codeclimate.com")
-STR
+        STR
       end
     end
 
@@ -18,21 +18,20 @@ STR
       end
 
       def instructions
-      <<-STR
+        <<-STR
   VCR.configure do |config|
     # your existing configuration
     config.ignore_hosts 'codeclimate.com'
   end
-STR
+        STR
       end
     end
 
     class ExceptionMessage
-
       HTTP_STUBBING_MESSAGES = {
-        "VCR::Errors::UnhandledHTTPRequestError" => VCRMessage,
-        "WebMock::NetConnectNotAllowedError"     => WebMockMessage
-      }
+        "VCR::Errors::UnhandledHTTPRequestError".freeze => VCRMessage,
+        "WebMock::NetConnectNotAllowedError".freeze => WebMockMessage,
+      }.freeze
 
       def initialize(exception)
         @exception = exception
@@ -59,7 +58,7 @@ Add the following to your spec or test helper to ensure codeclimate-test-reporte
         parts.join("\n")
       end
 
-    private
+      private
 
       def exception_class
         @exception.class.to_s

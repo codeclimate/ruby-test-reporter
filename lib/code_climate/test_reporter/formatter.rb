@@ -39,11 +39,11 @@ module CodeClimate
       # actually private ...
       def short_filename(filename)
         return filename unless ::SimpleCov.root
-        filename = filename.gsub(/^#{::SimpleCov.root}/, ".").gsub(/^\.\//, "")
+        filename = filename.gsub(/^#{::SimpleCov.root}/, ".").gsub(%r{^\./}, "")
         apply_prefix filename
       end
 
-    private
+      private
 
       def partial?
         tddium?
@@ -70,8 +70,8 @@ module CodeClimate
             line_counts: {
               total:    file.lines.count,
               covered:  file.covered_lines.count,
-              missed:   file.missed_lines.count
-            }
+              missed:   file.missed_lines.count,
+            },
           }
         end
 
@@ -89,9 +89,9 @@ module CodeClimate
             pwd:            Dir.pwd,
             rails_root:     (Rails.root.to_s rescue nil),
             simplecov_root: ::SimpleCov.root,
-            gem_version:    VERSION
+            gem_version:    VERSION,
           },
-          ci_service: ci_service_data
+          ci_service: ci_service_data,
         }
       end
 
@@ -110,7 +110,7 @@ module CodeClimate
         tddium? || ENV["CODECLIMATE_TO_FILE"] || ENV["TO_FILE"]
       end
 
-      def apply_prefix filename
+      def apply_prefix(filename)
         prefix = CodeClimate::TestReporter.configuration.path_prefix
         return filename if prefix.nil?
         "#{prefix}/#{filename}"

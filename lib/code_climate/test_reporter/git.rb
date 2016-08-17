@@ -1,7 +1,6 @@
 module CodeClimate
   module TestReporter
     class Git
-
       class << self
         def info
           {
@@ -17,16 +16,16 @@ module CodeClimate
 
         def clean_service_branch
           ci_branch = String(Ci.service_data[:branch])
-          clean = ci_branch.strip.sub(/^origin\//, "")
+          clean = ci_branch.strip.sub(%r{^origin/}, "")
 
-          clean.size > 0 ? clean : nil
+          !clean.empty? ? clean : nil
         end
 
         def clean_git_branch
           git_branch = String(branch_from_git)
-          clean = git_branch.sub(/^origin\//, "") unless git_branch.start_with?("(")
+          clean = git_branch.sub(%r{^origin/}, "") unless git_branch.start_with?("(")
 
-          clean.size > 0 ? clean : nil
+          !clean.empty? ? clean : nil
         end
 
         private
@@ -65,4 +64,3 @@ module CodeClimate
     end
   end
 end
-

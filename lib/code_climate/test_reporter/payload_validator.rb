@@ -20,7 +20,7 @@ module CodeClimate
         true
       end
 
-    private
+      private
 
       def commit_sha
         commit_sha_from_git || commit_sha_from_ci_service
