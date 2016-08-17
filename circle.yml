@@ -1,3 +1,6 @@
+machine:
+  ruby:
+    version: 2.2.2
 dependencies:
   pre:
     - git config --global user.email "ci@codeclimate.com"
