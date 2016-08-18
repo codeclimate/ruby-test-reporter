@@ -12,6 +12,15 @@ Metrics/AbcSize:
 # Style
 ################################################################################
 
+# and/or in conditionals has no meaningful difference (only gotchas), so we
+# disallow them there. When used for control flow, the difference in precedence
+# can make for a less noisy expression, as in:
+#
+#   x = find_x or raise XNotFound
+#
+Style/AndOr:
+  EnforcedStyle: conditionals
+
 # Executables are conventionally named bin/foo-bar
 Style/FileName:
   Exclude:

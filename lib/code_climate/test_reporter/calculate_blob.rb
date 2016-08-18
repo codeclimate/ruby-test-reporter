@@ -1,7 +1,6 @@
 module CodeClimate
   module TestReporter
     class CalculateBlob
-
       def initialize(file_path)
         @file_path = file_path
       end
@@ -10,7 +9,7 @@ module CodeClimate
         calculate_with_file or calculate_with_git
       end
 
-    private
+      private
 
       def calculate_with_file
         File.open(@file_path, "rb") do |file|
@@ -31,7 +30,6 @@ module CodeClimate
 
         output
       end
-
     end
   end
 end

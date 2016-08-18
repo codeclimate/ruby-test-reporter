@@ -7,7 +7,7 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
   tmpdir = Dir.tmpdir
   puts "Searching #{tmpdir} for files to POST."
   coverage_report_files = Dir.glob("#{tmpdir}/codeclimate-test-coverage-*")
-  if coverage_report_files.size > 0
+  if coverage_report_files.any?
     puts "Found: "
     puts coverage_report_files.join("\n")
     client = CodeClimate::TestReporter::Client.new

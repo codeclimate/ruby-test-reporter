@@ -5,9 +5,8 @@ require "net/https"
 module CodeClimate
   module TestReporter
     class Client
-
       DEFAULT_TIMEOUT = 5 # in seconds
-      USER_AGENT = "Code Climate (Ruby Test Reporter v#{VERSION})"
+      USER_AGENT = "Code Climate (Ruby Test Reporter v#{VERSION})".freeze
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||
@@ -72,7 +71,7 @@ module CodeClimate
         end
       end
 
-    private
+      private
 
       def http_client(uri)
         Net::HTTP.new(uri.host, uri.port).tap do |http|
