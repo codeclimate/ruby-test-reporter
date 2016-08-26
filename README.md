@@ -135,6 +135,20 @@ Add the following to your spec or test helper:
 
         WebMock.disable_net_connect!(:allow => "codeclimate.com")
 
+### Gem::InstallError: json requires Ruby version ~> 2.0
+
+Some versions of simplecov after 0.11.2 effectively don't support ruby 1.9.3
+due to a loose json dependency that picks the latest version of `json`.
+
+See full explanation of issue: [colszowka/simplecov#511](https://github.com/colszowka/simplecov/issues/511)
+
+The Code Climate Ruby test reporter supports ruby > 1.9. To run with ruby less
+than 2.0, you may need to specify a locked dependency to simplecov 0.11.2 or
+json < 2.0 in your project's gemfile:
+
+          gem "codeclimate-test-reporter"
+          gem "simplecov", "~> 0.11.2"
+
 ### Other communication failures
 
 If you are using a web stubbing library similar to VCR or WebMock which prevent external requests during test runs, you will need configure these libraries to allow Code Climate to make external requests.
