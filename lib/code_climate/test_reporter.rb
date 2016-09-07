@@ -1,14 +1,17 @@
 module CodeClimate
   module TestReporter
+    WARNING_MESSAGE = <<-EOS
+      This usage of the Code Climate Test Reporter is now deprecated. Since version
+      1.0, we now require you to run `SimpleCov` in your test/spec helper, and then
+      run the provided `codeclimate-ruby` binary separately to report your results
+      to Code Climate.
+
+      More information here: https://github.com/codeclimate/ruby-test-reporter/blob/master/README.md
+    EOS
+
     def self.start
-      if run?
-        require "simplecov"
-        ::SimpleCov.add_filter "vendor"
-        ::SimpleCov.formatter = Formatter
-        ::SimpleCov.start(configuration.profile) do
-          skip_token CodeClimate::TestReporter.configuration.skip_token
-        end
-      end
+      logger.warn(WARNING_MESSAGE)
+      exit(1)
     end
 
     def self.run?

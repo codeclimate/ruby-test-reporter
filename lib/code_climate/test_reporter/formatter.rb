@@ -12,12 +12,22 @@ require "code_climate/test_reporter/payload_validator"
 module CodeClimate
   module TestReporter
     class Formatter
+      class InvalidSimpleCovResultError < StandardError; end
+
       def format(result)
         return true unless CodeClimate::TestReporter.run?
 
-        print "Coverage = #{result.source_files.covered_percent.round(2)}%. "
+        begin
+          validated_result = result.values.fetch(0).fetch("coverage")
+        rescue NoMethodError, KeyError => ex
+          raise InvalidSimpleCovResultError, ex.message
+        end
 
-        payload = to_payload(result)
+        simplecov_result = SimpleCov::Result.new(validated_result)
+
+        print "Coverage = #{simplecov_result.source_files.covered_percent.round(2)}%. "
+
+        payload = to_payload(simplecov_result)
         PayloadValidator.validate(payload)
         if write_to_file?
           file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")

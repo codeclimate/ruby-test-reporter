@@ -6,37 +6,6 @@ module CodeClimate::TestReporter
     let(:project_path) { "spec/tmp" }
     let(:project_file) { "fake_project.rb" }
     let(:formatter) { Formatter.new }
-    let(:source_files) {
-      double(
-        :covered_percent  => 24.3,
-        :covered_strength => 33.2,
-      )
-    }
-    let(:files) {
-      [
-        double(
-          :lines            => [double, double, double],
-          :covered_lines    => [double, double],
-          :missed_lines     => [double],
-          :skipped_lines    => [double(:line_number => 5), double(:line_number => 6)],
-          :filename         => project_file,
-          :coverage         => [0,3,2,nil,1,0],
-          :covered_percent  => 33.2,
-          :covered_strength => 2
-        )
-      ]
-    }
-
-    let(:simplecov_result) {
-      double(
-        :covered_percent  => 24.3,
-        :covered_strength => 33.2,
-        :files            => files,
-        :source_files     => source_files,
-        :created_at       => Time.at(1379704336),
-        :command_name     => "rspec"
-      )
-    }
 
     let(:expected_request) {
       {
@@ -45,17 +14,17 @@ module CodeClimate::TestReporter
           [
             {
               "name" => project_file,
-              "blob_id" => "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-              "coverage" => "[0,3,2,null,null,null]",
-              "covered_percent" => 33.2,
-              "covered_strength" => 2.0,
-              "line_counts" => {"total"=>3, "covered"=>2, "missed"=>1}
+              "blob_id" => "84275f9939456e87efd6932bdf7fe01d52a53116",
+              "coverage" => "[5,3,null,0]",
+              "covered_percent" => 66.67,
+              "covered_strength" => 2.7,
+              "line_counts" => {"total"=>4, "covered"=>2, "missed"=>1}
             }
           ],
-        "run_at" => 1379704336,
-        "covered_percent" => 24.3,
-        "covered_strength" => 33.2,
-        "line_counts" => {"total" => 3, "covered" => 2, "missed" => 1 },
+        "run_at" => Time.now.to_i,
+        "covered_percent" => 66.67,
+        "covered_strength" => 2.7,
+        "line_counts" => {"total" => 4, "covered" => 2, "missed" => 1 },
         "partial"=> false,
         "git" =>
           {
@@ -78,7 +47,7 @@ module CodeClimate::TestReporter
       @old_pwd = Dir.pwd
       FileUtils.mkdir_p(project_path)
       FileUtils.cd(project_path)
-      FileUtils.touch(project_file)
+      FileUtils.cp("../fixtures/test_file.rb", project_file)
       SimpleCov.root(Dir.pwd)
       system("git init")
       system("git add #{project_file}")
@@ -98,6 +67,12 @@ module CodeClimate::TestReporter
       stub = stub_request(:post, "http://cc.dev/test_reports").
         with(:headers => {'Content-Encoding'=>'gzip', 'Content-Type'=>'application/json', 'User-Agent'=>"Code Climate (Ruby Test Reporter v#{CodeClimate::TestReporter::VERSION})"})
       requests = capture_requests(stub)
+
+      simplecov_result = { "RSpec" =>
+          { "coverage" =>
+            { "#{SimpleCov.root}/fake_project.rb" => [5,3,nil,0] }
+          }
+      }
 
       formatter.format(simplecov_result)
 
