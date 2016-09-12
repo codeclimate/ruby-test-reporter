@@ -5,3 +5,8 @@ dependencies:
   pre:
     - git config --global user.email "ci@codeclimate.com"
     - git config --global user.name "Code Climate CI"
+
+test:
+  override:
+    - bundle exec rake
+    - bundle exec bin/codeclimate-test-reporter

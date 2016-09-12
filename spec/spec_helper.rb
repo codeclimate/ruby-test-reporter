@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require 'bundler/setup'
 require 'pry'
 require 'codeclimate-test-reporter'
