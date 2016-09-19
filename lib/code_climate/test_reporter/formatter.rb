@@ -46,13 +46,6 @@ module CodeClimate
         false
       end
 
-      # actually private ...
-      def short_filename(filename)
-        return filename unless ::SimpleCov.root
-        filename = filename.gsub(/^#{::SimpleCov.root}/, ".").gsub(%r{^\./}, "")
-        apply_prefix filename
-      end
-
       private
 
       def partial?
@@ -72,7 +65,7 @@ module CodeClimate
           end
 
           {
-            name:             short_filename(file.filename),
+            name:             ShortenFilename.new(file.filename).short_filename,
             blob_id:          CalculateBlob.new(file.filename).blob_id,
             coverage:         file.coverage.to_json,
             covered_percent:  round(file.covered_percent, 2),
@@ -118,12 +111,6 @@ module CodeClimate
       def write_to_file?
         warn "TO_FILE is deprecated, use CODECLIMATE_TO_FILE" if ENV["TO_FILE"]
         tddium? || ENV["CODECLIMATE_TO_FILE"] || ENV["TO_FILE"]
-      end
-
-      def apply_prefix(filename)
-        prefix = CodeClimate::TestReporter.configuration.path_prefix
-        return filename if prefix.nil?
-        "#{prefix}/#{filename}"
       end
 
       def ci_service_data
