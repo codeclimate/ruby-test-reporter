@@ -14,6 +14,12 @@ module CodeClimate
       exit(1)
     end
 
+    def self.run(results)
+      return unless CodeClimate::TestReporter.run?
+      formatted_results = CodeClimate::TestReporter::Formatter.new.format(results)
+      CodeClimate::TestReporter::PostResults.new(formatted_results).post
+    end
+
     def self.run?
       environment_variable_set? && run_on_current_branch?
     end
@@ -52,6 +58,14 @@ module CodeClimate
 
     def self.logger
       CodeClimate::TestReporter.configuration.logger
+    end
+
+    def self.tddium?
+      ci_service_data && ci_service_data[:name] == "tddium"
+    end
+
+    def self.ci_service_data
+      Ci.service_data
     end
   end
 end

@@ -14,42 +14,25 @@ module CodeClimate
     class Formatter
       class InvalidSimpleCovResultError < StandardError; end
 
-      def format(result)
-        return true unless CodeClimate::TestReporter.run?
-
+      def format(results)
         begin
-          validated_result = result.values.fetch(0).fetch("coverage")
+          validated_results = results.values.fetch(0).fetch("coverage")
         rescue NoMethodError, KeyError => ex
           raise InvalidSimpleCovResultError, ex.message
         end
 
-        simplecov_result = SimpleCov::Result.new(validated_result)
+        simplecov_results = SimpleCov::Result.new(validated_results)
 
-        print "Coverage = #{simplecov_result.source_files.covered_percent.round(2)}%. "
-
-        payload = to_payload(simplecov_result)
+        payload = to_payload(simplecov_results)
         PayloadValidator.validate(payload)
-        if write_to_file?
-          file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
-          print "Coverage results saved to #{file_path}... "
-          File.open(file_path, "w") { |file| file.write(payload.to_json) }
-        else
-          client = Client.new
-          print "Sending report to #{client.host} for branch #{Git.branch_from_git_or_ci}... "
-          client.post_results(payload)
-        end
 
-        puts "done."
-        true
-      rescue => ex
-        puts ExceptionMessage.new(ex).message
-        false
+        payload
       end
 
       private
 
       def partial?
-        tddium?
+        CodeClimate::TestReporter.tddium?
       end
 
       def to_payload(result)
@@ -94,12 +77,8 @@ module CodeClimate
             simplecov_root: ::SimpleCov.root,
             gem_version:    VERSION,
           },
-          ci_service: ci_service_data,
+          ci_service: CodeClimate::TestReporter.ci_service_data,
         }
-      end
-
-      def tddium?
-        ci_service_data && ci_service_data[:name] == "tddium"
       end
 
       # Convert to Float before rounding.
@@ -108,14 +87,7 @@ module CodeClimate
         Float(numeric).round(precision)
       end
 
-      def write_to_file?
-        warn "TO_FILE is deprecated, use CODECLIMATE_TO_FILE" if ENV["TO_FILE"]
-        tddium? || ENV["CODECLIMATE_TO_FILE"] || ENV["TO_FILE"]
-      end
 
-      def ci_service_data
-        @ci_service_data ||= Ci.service_data
-      end
     end
   end
 end

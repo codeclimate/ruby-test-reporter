@@ -6,7 +6,7 @@ module CodeClimate
   module TestReporter
     class Client
       DEFAULT_TIMEOUT = 5 # in seconds
-      USER_AGENT = "Code Climate (Ruby Test Reporter v#{VERSION})".freeze
+      USER_AGENT = "Code Climate (Ruby Test Reporter v#{CodeClimate::TestReporter::VERSION})".freeze
 
       def host
         ENV["CODECLIMATE_API_HOST"] ||

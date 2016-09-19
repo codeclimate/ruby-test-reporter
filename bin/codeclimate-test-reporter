@@ -7,13 +7,13 @@ COVERAGE_FILE = "coverage/.resultset.json".freeze
 if ENV["CODECLIMATE_REPO_TOKEN"]
   if File.exist?(COVERAGE_FILE)
     begin
-      result = JSON.parse(File.read(COVERAGE_FILE))
+      results = JSON.parse(File.read(COVERAGE_FILE))
     rescue JSON::ParserError => e
       $stderr.puts "Error encountered while parseing #{COVERAGE_FILE}: #{e}"
       exit(1)
     end
 
-    CodeClimate::TestReporter::Formatter.new.format(result)
+    CodeClimate::TestReporter.run(results)
   else
     $stderr.puts "Coverage results not found"
     exit(1)
