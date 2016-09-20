@@ -58,6 +58,19 @@ module CodeClimate::TestReporter
       end
     end
 
+    describe 'mixed config/git' do
+      let (:git) { CodeClimate::TestReporter::Configuration::Git.new }
+
+      it 'falls back to git' do
+        git.branch = 'configured'
+        allow(CodeClimate::TestReporter.configuration).to receive(:git).and_return git
+        allow(Git).to receive(:head).and_return '123467890abcdefg'
+
+        expect(Git.info[:branch]).to eq('configured')
+        expect(Git.info[:head]).to eq('123467890abcdefg')
+      end
+    end
+
     describe 'branch_from_git_or_ci' do
       it 'returns the branch from ci' do
         allow(Ci).to receive(:service_data).and_return({branch: 'ci-branch'})

@@ -6,6 +6,7 @@ module CodeClimate
 
     def self.configure
       @@configuration = Configuration.new
+      @@configuration.git = Configuration::Git.new
 
       if block_given?
         yield configuration
@@ -19,7 +20,7 @@ module CodeClimate
     end
 
     class Configuration
-      attr_accessor :branch, :path_prefix, :gzip_request, :git_dir
+      attr_accessor :branch, :path_prefix, :gzip_request, :git_dir, :git
 
       attr_writer :logger, :profile, :timeout
 
@@ -50,6 +51,10 @@ module CodeClimate
         log.level = Logger::INFO
 
         log
+      end
+
+      class Git
+        attr_accessor :branch, :committed_at, :head
       end
     end
   end
