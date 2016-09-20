@@ -72,7 +72,7 @@ module CodeClimate::TestReporter
         expect(CodeClimate::TestReporter.configuration.timeout).to eq(666)
       end
 
-      it 'stored manual git info' do
+      it 'stores manual git info' do
         CodeClimate::TestReporter.configure do |config|
           config.git.head = 'bc6314f05cde7100ecd47d001a1d9f6d7cfd5c96'
           config.git.committed_at = '1474403999'
