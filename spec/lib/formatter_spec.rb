@@ -43,10 +43,13 @@ module CodeClimate::TestReporter
 
     before do
       @old_pwd = Dir.pwd
-      FileUtils.cd("#{Dir.pwd}/spec/fixtures/fake_project")
+      FileUtils.cd("#{Dir.pwd}/spec/fixtures")
+      `tar -xvzf fake_project.tar.gz`
+      FileUtils.cd("fake_project")
     end
 
     after do
+      FileUtils.rm_rf("#{@old_pwd}/spec/fixtures/fake_project")
       FileUtils.cd(@old_pwd)
     end
 
