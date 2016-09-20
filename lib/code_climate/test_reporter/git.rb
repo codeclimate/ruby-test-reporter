@@ -4,9 +4,9 @@ module CodeClimate
       class << self
         def info
           {
-            head:         head,
-            committed_at: committed_at,
-            branch:       branch_from_git,
+            head:         configured_git_head || head,
+            committed_at: configured_git_timestamp || committed_at,
+            branch:       configured_git_branch || branch_from_git,
           }
         end
 
@@ -55,6 +55,19 @@ module CodeClimate
         def configured_git_dir
           CodeClimate::TestReporter.configuration.git_dir
         end
+
+        def configured_git_branch
+          CodeClimate::TestReporter.configuration.git.branch
+        end
+
+        def configured_git_timestamp
+          CodeClimate::TestReporter.configuration.git.committed_at
+        end
+
+        def configured_git_head
+          CodeClimate::TestReporter.configuration.git.head
+        end
+
 
         def rails_git_dir_present?
           const_defined?(:Rails) && Rails.respond_to?(:root) && !Rails.root.nil? &&

@@ -69,6 +69,22 @@ end
 CodeClimate::TestReporter.start
 ```
 
+### Manual Git Configuration
+
+You can manually provide the required git information if you do not have your git repo available. The
+TestReporter will fallback to commandline git, if you don't provide all information.
+
+```ruby
+CodeClimate::TestReporter.configure do |config|
+  config.git.head = File.read('./GIT_REVISION').strip
+  config.git.committed_at = File.read('./GIT_TIMESTAMP').strip
+  config.git.branch = File.read('./GIT_BRANCH').strip
+end
+```
+
+
+
+
 ## Troubleshooting
 
 If you're having trouble setting up or working with our test coverage feature, [see our detailed help doc](http://docs.codeclimate.com/article/220-help-im-having-trouble-with-test-coverage), which covers the most common issues encountered.

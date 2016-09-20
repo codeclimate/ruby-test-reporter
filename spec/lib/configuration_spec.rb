@@ -10,6 +10,7 @@ module CodeClimate::TestReporter
 
       it 'provides defaults' do
         expect(CodeClimate::TestReporter.configuration.branch).to be_nil
+        expect(CodeClimate::TestReporter.configuration.git).to be_instance_of Configuration::Git
         expect(CodeClimate::TestReporter.configuration.logger).to be_instance_of Logger
         expect(CodeClimate::TestReporter.configuration.logger.level).to eq Logger::INFO
         expect(CodeClimate::TestReporter.configuration.profile).to eq('test_frameworks')
@@ -69,6 +70,18 @@ module CodeClimate::TestReporter
         end
 
         expect(CodeClimate::TestReporter.configuration.timeout).to eq(666)
+      end
+
+      it 'stored manual git info' do
+        CodeClimate::TestReporter.configure do |config|
+          config.git.head = 'bc6314f05cde7100ecd47d001a1d9f6d7cfd5c96'
+          config.git.committed_at = '1474403999'
+          config.git.branch = 'master'
+        end
+
+        expect(CodeClimate::TestReporter.configuration.git.head).to eq('bc6314f05cde7100ecd47d001a1d9f6d7cfd5c96')
+        expect(CodeClimate::TestReporter.configuration.git.committed_at).to eq('1474403999')
+        expect(CodeClimate::TestReporter.configuration.git.branch).to eq('master')
       end
     end
   end
