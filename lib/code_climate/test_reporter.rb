@@ -1,6 +1,6 @@
 module CodeClimate
   module TestReporter
-    WARNING_MESSAGE = <<-EOS
+    WARNING_MESSAGE = <<-EOS.freeze
       This usage of the Code Climate Test Reporter is now deprecated. Since version
       1.0, we now require you to run `SimpleCov` in your test/spec helper, and then
       run the provided `codeclimate-ruby` binary separately to report your results

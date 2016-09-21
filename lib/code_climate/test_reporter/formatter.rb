@@ -86,8 +86,6 @@ module CodeClimate
       def round(numeric, precision)
         Float(numeric).round(precision)
       end
-
-
     end
   end
 end
