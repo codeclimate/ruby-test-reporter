@@ -12,41 +12,27 @@ require "code_climate/test_reporter/payload_validator"
 module CodeClimate
   module TestReporter
     class Formatter
-      def format(result)
-        return true unless CodeClimate::TestReporter.run?
+      class InvalidSimpleCovResultError < StandardError; end
 
-        print "Coverage = #{result.source_files.covered_percent.round(2)}%. "
-
-        payload = to_payload(result)
-        PayloadValidator.validate(payload)
-        if write_to_file?
-          file_path = File.join(Dir.tmpdir, "codeclimate-test-coverage-#{SecureRandom.uuid}.json")
-          print "Coverage results saved to #{file_path}... "
-          File.open(file_path, "w") { |file| file.write(payload.to_json) }
-        else
-          client = Client.new
-          print "Sending report to #{client.host} for branch #{Git.branch_from_git_or_ci}... "
-          client.post_results(payload)
+      def format(results)
+        begin
+          validated_results = results.values.fetch(0).fetch("coverage")
+        rescue NoMethodError, KeyError => ex
+          raise InvalidSimpleCovResultError, ex.message
         end
 
-        puts "done."
-        true
-      rescue => ex
-        puts ExceptionMessage.new(ex).message
-        false
-      end
+        simplecov_results = SimpleCov::Result.new(validated_results)
 
-      # actually private ...
-      def short_filename(filename)
-        return filename unless ::SimpleCov.root
-        filename = filename.gsub(/^#{::SimpleCov.root}/, ".").gsub(%r{^\./}, "")
-        apply_prefix filename
+        payload = to_payload(simplecov_results)
+        PayloadValidator.validate(payload)
+
+        payload
       end
 
       private
 
       def partial?
-        tddium?
+        CodeClimate::TestReporter.tddium?
       end
 
       def to_payload(result)
@@ -62,7 +48,7 @@ module CodeClimate
           end
 
           {
-            name:             short_filename(file.filename),
+            name:             ShortenFilename.new(file.filename).short_filename,
             blob_id:          CalculateBlob.new(file.filename).blob_id,
             coverage:         file.coverage.to_json,
             covered_percent:  round(file.covered_percent, 2),
@@ -91,33 +77,14 @@ module CodeClimate
             simplecov_root: ::SimpleCov.root,
             gem_version:    VERSION,
           },
-          ci_service: ci_service_data,
+          ci_service: CodeClimate::TestReporter.ci_service_data,
         }
-      end
-
-      def tddium?
-        ci_service_data && ci_service_data[:name] == "tddium"
       end
 
       # Convert to Float before rounding.
       # Fixes [#7] possible segmentation fault when calling #round on a Rational
       def round(numeric, precision)
         Float(numeric).round(precision)
-      end
-
-      def write_to_file?
-        warn "TO_FILE is deprecated, use CODECLIMATE_TO_FILE" if ENV["TO_FILE"]
-        tddium? || ENV["CODECLIMATE_TO_FILE"] || ENV["TO_FILE"]
-      end
-
-      def apply_prefix(filename)
-        prefix = CodeClimate::TestReporter.configuration.path_prefix
-        return filename if prefix.nil?
-        "#{prefix}/#{filename}"
-      end
-
-      def ci_service_data
-        @ci_service_data ||= Ci.service_data
       end
     end
   end
