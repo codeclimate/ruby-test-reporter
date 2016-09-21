@@ -16,8 +16,10 @@ module CodeClimate::TestReporter
       let(:fixture) { File.expand_path("../../fixtures/encoding_test_iso.rb", __FILE__) }
 
       it 'falls back to git' do
-        expect(File).to receive(:open).and_raise(EncodingError)
-        expect(subject.blob_id).to eq('eb82c22dadb9c47a7fed87211623f6856e112f46')
+        capture_io do
+          expect(File).to receive(:open).and_raise(EncodingError)
+          expect(subject.blob_id).to eq('eb82c22dadb9c47a7fed87211623f6856e112f46')
+        end
       end
 
     end

@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe CodeClimate::TestReporter do
+  let(:logger) { double.as_null_object }
   let(:reporter) { CodeClimate::TestReporter.dup }
+
+  before do
+    allow(CodeClimate::TestReporter.configuration).to receive(:logger).and_return(logger)
+  end
 
   describe '.run_on_current_branch?' do
     it 'returns true if there is no branch configured' do
@@ -24,7 +29,7 @@ describe CodeClimate::TestReporter do
     end
 
     it 'logs a message if false' do
-      expect_any_instance_of(Logger).to receive(:info)
+      expect(logger).to receive(:info)
 
       allow(reporter).to receive(:current_branch).and_return("another-branch")
       allow(reporter).to receive(:configured_branch).and_return(:master)
