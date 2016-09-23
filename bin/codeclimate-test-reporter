@@ -4,7 +4,7 @@ require "codeclimate-test-reporter"
 
 COVERAGE_FILE = "coverage/.resultset.json".freeze
 
-if ENV["CODECLIMATE_REPO_TOKEN"]
+if (repo_token = ENV["CODECLIMATE_REPO_TOKEN"]) && !repo_token.empty?
   if File.exist?(COVERAGE_FILE)
     begin
       results = JSON.parse(File.read(COVERAGE_FILE))
