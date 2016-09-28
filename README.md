@@ -11,7 +11,7 @@ Code Climate - [https://codeclimate.com](https://codeclimate.com)
 This gem requires a user, but not necessarily a paid account, on Code Climate, so if you don't have one the
 first step is to signup at: [https://codeclimate.com](https://codeclimate.com). Then:
 
-1. Add this to your Gemfile:
+* Add this to your Gemfile:
 
 ```ruby
 group :test do
@@ -20,11 +20,11 @@ group :test do
 end
 ```
 
-1. Start SimpleCov as you normally would (more information here: https://github.com/colszowka/simplecov)
+* Start SimpleCov as you normally would (more information here: https://github.com/colszowka/simplecov)
 
-1. Set the `CODECLIMATE_REPO_TOKEN` environment variable (provided after you add your repo to your Code Climate account by clicking on "Setup Test Coverage" on the right hand side of your feed)
+* Set the `CODECLIMATE_REPO_TOKEN` environment variable (provided after you add your repo to your Code Climate account by clicking on "Setup Test Coverage" on the right hand side of your feed)
 
-1. Run the `codeclimate-test-reporter` executable at the end of your test suite
+* Run the `codeclimate-test-reporter` executable at the end of your test suite
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
