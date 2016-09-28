@@ -13,7 +13,12 @@ first step is to signup at: [https://codeclimate.com](https://codeclimate.com). 
 
 1. Add this to your Gemfile:
 
-        gem "codeclimate-test-reporter", group: :test
+```ruby
+group :test do
+  gem "simplecov"
+  gem "codeclimate-test-reporter", "1.0.0.pre.rc2"
+end
+```
 
 1. Start SimpleCov as you normally would (more information here: https://github.com/colszowka/simplecov)
 
@@ -26,6 +31,14 @@ Please contact hello@codeclimate.com if you need any assistance setting this up.
 ## Troubleshooting / FYIs
 
 Across the many different testing frameworks, setups, and environments, there are lots of variables at play. If you're having any trouble with your test coverage reporting or the results are confusing, please see our full documentation here: https://docs.codeclimate.com/docs/setting-up-test-coverage
+
+## Upgrading from pre-1.0 Versions
+
+Version `1.0` of the this gem introduces new, breaking changes to the way the test reporter is meant to be executed. The following list summarizes the major differences:
+
+* Previously, this gem extended `Simplecov` with a custom formatter which posted results to Code Climate. Now, you are responsible for executing `Simplecov` yourself, and then running `codeclimate-test-reporter` as a separate step in your build.
+* Previously, this gem added some exclusion rules tuned according to feedback from its users, and now these no longer happen automatically. *If you are experiencing a discrepancy in test coverage % after switching to the new gem version, it may be due to missing exclusions. Filtering `vendor`, `spec`, or `test` directories may fix this issue.*
+* Previously, during the execution of multiple test suites, this gem would send results from the first suite completed. You are now expected to run an executable packaged with this gem as a separate build step, which means that whatever results are there (likely the results from the last suite) will be posted to Code Climate.
 
 ## Contributions
 
