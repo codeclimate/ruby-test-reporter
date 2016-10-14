@@ -1,12 +1,14 @@
-machine:
-  ruby:
-    version: 2.2.2
 dependencies:
   pre:
     - git config --global user.email "ci@codeclimate.com"
     - git config --global user.name "Code Climate CI"
+  override:
+    - rvm 1.9.3 do bundle install
+    - rvm 2.2.2 do bundle install
+
 
 test:
   override:
-    - bundle exec rake
-    - bundle exec bin/codeclimate-test-reporter
+    - rvm 1.9.3 do bundle exec rake
+    - rvm 2.2.2 do bundle exec rake
+    - rvm 2.2.2 do bundle exec bin/codeclimate-test-reporter
