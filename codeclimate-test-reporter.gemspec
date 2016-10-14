@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "webmock"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "json", "~> 1.8", "< 2" if RUBY_VERSION < "2"
 end
