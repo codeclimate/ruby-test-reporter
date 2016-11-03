@@ -32,7 +32,6 @@ module CodeClimate::TestReporter
           },
         environment:
           {
-            test_framework:  "rspec",
             pwd:  Dir.pwd,
             rails_root:  nil,
             simplecov_root: SimpleCov.root,
