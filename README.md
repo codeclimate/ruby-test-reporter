@@ -18,7 +18,7 @@ so if you don't have one the first step is to signup at:
   ```ruby
   group :test do
     gem "simplecov"
-    gem "codeclimate-test-reporter", "1.0.0.pre.rc2"
+    gem "codeclimate-test-reporter", "~> 1.0.0"
   end
   ```
 
