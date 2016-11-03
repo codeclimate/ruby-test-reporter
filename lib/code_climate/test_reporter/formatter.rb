@@ -71,7 +71,6 @@ module CodeClimate
           partial:          partial?,
           git: Git.info,
           environment: {
-            test_framework: result.command_name.downcase,
             pwd:            Dir.pwd,
             rails_root:     (Rails.root.to_s rescue nil),
             simplecov_root: ::SimpleCov.root,
