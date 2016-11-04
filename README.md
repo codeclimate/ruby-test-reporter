@@ -51,8 +51,26 @@ differences:
 
 * Previously, this gem extended `Simplecov` with a custom formatter which posted
   results to Code Climate. Now, you are responsible for executing `Simplecov`
-  yourself, and then running `codeclimate-test-reporter` as a separate step in
-  your build.
+  yourself.
+
+  * If you already have the following in your test/test_helper.rb
+    (or spec_helper.rb, cucumber env.rb, etc)
+
+    ```ruby
+    require 'codeclimate-test-reporter'
+    CodeClimate::TestReporter.start
+    ```
+
+    then you should replace it with
+
+    ```ruby
+    require 'simplecov'
+    SimpleCov.start
+    ```
+
+* Previously, the `codeclimate-test-reporter` automatically uploaded results at
+  the end of your test suite.  Now, you are responsible for running
+  `codeclimate-test-reporter` as a separate step in your build.
 * Previously, this gem added some exclusion rules tuned according to feedback
   from its users, and now these no longer happen automatically. *If you are
   experiencing a discrepancy in test coverage % after switching to the new gem
