@@ -47,7 +47,7 @@ module CodeClimate::TestReporter
       end
 
       it "should not strip the subdirectory if it has the same name as the root" do
-        expect(shorten_filename_with_double_simplecov_root.short_filename).to eq("#{::SimpleCov.root}/file1")
+        expect(shorten_filename_with_double_simplecov_root.short_filename).to eq("#{::SimpleCov.root[1..-1]}/file1")
       end
     end
   end
