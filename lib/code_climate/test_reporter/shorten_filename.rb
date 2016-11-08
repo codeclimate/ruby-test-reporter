@@ -7,7 +7,7 @@ module CodeClimate
 
       def short_filename
         return @filename unless ::SimpleCov.root
-        apply_prefix @filename.gsub(/^#{::SimpleCov.root}/, ".").gsub(%r{^\./}, "")
+        apply_prefix @filename.gsub(/^#{Regexp.escape(::SimpleCov.root)}/, ".").gsub(%r{^\./}, "")
       end
 
       private
