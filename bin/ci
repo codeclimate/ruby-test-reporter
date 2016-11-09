@@ -1,0 +1,19 @@
+#!/bin/bash --login
+
+set -e
+
+rvm use 1.9.3
+set -x
+ruby -v
+
+bundle install --gemfile Gemfile.ruby-19
+bundle exec rake
+
+set +x
+rvm use 2.2.2
+set -x
+ruby -v
+
+bundle install
+bundle exec rake
+bundle exec bin/codeclimate-test-reporter
