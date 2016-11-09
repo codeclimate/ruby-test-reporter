@@ -11,16 +11,14 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
 
   spec.files = `git ls-files bin lib config LICENSE.txt README.md`.split($/)
-  spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }.reject { |f| f == "ci" }
 
   spec.required_ruby_version = ">= 1.9"
+  spec.add_runtime_dependency "simplecov"
 
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "pry"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "webmock"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "addressable", "< 2.5" if RUBY_VERSION < "2"
-  spec.add_development_dependency "json", "~> 1.8", "< 2" if RUBY_VERSION < "2"
 end
