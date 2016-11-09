@@ -3,12 +3,12 @@
 set -e
 
 rvm use 1.9.3
-test "$(ruby -v)" =~ 1.9.3
+test "$(ruby -v)" =~ "1.9.3"
 bundle install --gemfile Gemfile.ruby-19
 bundle exec rake
 
 rvm use 2.2.2
-test "$(ruby -v)" =~ 2.2.2
+test "$(ruby -v)" =~ "2.2.2"
 bundle install
 bundle exec rake
 
