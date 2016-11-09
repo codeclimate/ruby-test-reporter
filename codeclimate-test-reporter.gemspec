@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
 
   spec.files = `git ls-files bin lib config LICENSE.txt README.md`.split($/)
-  spec.executables = ["bin/cc-tddium-post-worker", "bin/codeclimate-test-reporter"]
+  spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }.reject { |f| f == "ci" }
 
   spec.required_ruby_version = ">= 1.9"
   spec.add_runtime_dependency "simplecov"
