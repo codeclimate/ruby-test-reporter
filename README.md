@@ -11,34 +11,8 @@ Code Climate - [https://codeclimate.com](https://codeclimate.com)
 
 This gem requires a user, but not necessarily a paid account, on Code Climate,
 so if you don't have one the first step is to signup at:
-[https://codeclimate.com](https://codeclimate.com). Then:
-
-* Add this to your Gemfile:
-
-  ```ruby
-  group :test do
-    gem "simplecov"
-    gem "codeclimate-test-reporter", "~> 1.0.0"
-  end
-  ```
-
-* Start [SimpleCov](https://github.com/colszowka/simplecov) right at the top of
-  your `spec/spec_helper.rb`, `test/test_helper.rb`, or cucumber `env.rb`.
-
-  ```ruby
-  require 'simplecov'
-  SimpleCov.start
-  ```
-
-* Set the `CODECLIMATE_REPO_TOKEN` environment variable (provided after you add
-  your repo to your Code Climate account by clicking on "Setup Test Coverage" on
-  the right hand side of your feed)
-* Run the `codeclimate-test-reporter` executable after your test suite
-
-  ```
-  bundle exec rake
-  bundle exec codeclimate-test-reporter
-  ```
+[https://codeclimate.com](https://codeclimate.com). Then follow the
+instructions on our [documentation site](https://docs.codeclimate.com/docs/ruby)
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
