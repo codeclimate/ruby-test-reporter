@@ -7,6 +7,7 @@ module CodeClimate
           travis_extras = {}
           if env["TRAVIS_PULL_REQUEST_SHA"] != ""
             travis_extras[:commit_sha] = env["TRAVIS_PULL_REQUEST_SHA"]
+            travis_extras[:branch] = env["TRAVIS_PULL_REQUEST_BRANCH"]
           end
           {
             name:             "travis-ci",
