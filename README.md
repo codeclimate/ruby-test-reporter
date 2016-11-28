@@ -68,7 +68,7 @@ Patches, bug fixes, feature requests, and pull requests are welcome on the
 GitHub page for this project:
 [https://github.com/codeclimate/ruby-test-reporter](https://github.com/codeclimate/ruby-test-reporter)
 
-This gem is maintained by Bryan Helmkamp (bryan@codeclimate.com).
+This gem is maintained by Code Climate (hello@codeclimate.com).
 
 ## Copyright
 
