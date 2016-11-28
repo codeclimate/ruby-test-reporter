@@ -25,42 +25,11 @@ documentation here: https://docs.codeclimate.com/docs/setting-up-test-coverage
 
 ## Upgrading from pre-1.0 Versions
 
-Version `1.0` of the this gem introduces new, breaking changes to the way the
+Version `1.0` of this gem introduced new, breaking changes to the way the
 test reporter is meant to be executed. The following list summarizes the major
 differences:
 
-* Previously, this gem extended `Simplecov` with a custom formatter which posted
-  results to Code Climate. Now, you are responsible for executing `Simplecov`
-  yourself.
-
-  * If you already have the following in your test/test_helper.rb
-    (or spec_helper.rb, cucumber env.rb, etc)
-
-    ```ruby
-    require 'codeclimate-test-reporter'
-    CodeClimate::TestReporter.start
-    ```
-
-    then you should replace it with
-
-    ```ruby
-    require 'simplecov'
-    SimpleCov.start
-    ```
-
-* Previously, the `codeclimate-test-reporter` automatically uploaded results at
-  the end of your test suite.  Now, you are responsible for running
-  `codeclimate-test-reporter` as a separate step in your build.
-* Previously, this gem added some exclusion rules tuned according to feedback
-  from its users, and now these no longer happen automatically. *If you are
-  experiencing a discrepancy in test coverage % after switching to the new gem
-  version, it may be due to missing exclusions. Filtering `vendor`, `spec`, or
-  `test` directories may fix this issue.*
-* Previously, during the execution of multiple test suites, this gem would send
-  results from the first suite completed. You are now expected to run an
-  executable packaged with this gem as a separate build step, which means that
-  whatever results are there (likely the results from the last suite) will be
-  posted to Code Climate.
+See [the changelog entry for v1.0.0](CHANGELOG.md#v100-2016-11-03) for details.
 
 ## Contributions
 
@@ -68,7 +37,21 @@ Patches, bug fixes, feature requests, and pull requests are welcome on the
 GitHub page for this project:
 [https://github.com/codeclimate/ruby-test-reporter](https://github.com/codeclimate/ruby-test-reporter)
 
+When making a pull request, please update the [changelog](CHANGELOG.md).
+
 This gem is maintained by Code Climate (hello@codeclimate.com).
+
+### Release Process
+
+* Update the changelog to mark the unreleased changes as part of the new release.
+* Update the version.rb with the new version number
+* Make a pull request with those changes
+* Merge those changes to master
+* Check out and pull down the latest master locally
+* `rake release` which will
+  * tag the latest commit based on version.rb
+  * push to github
+  * push to rubygems
 
 ## Copyright
 
