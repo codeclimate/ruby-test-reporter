@@ -4,6 +4,8 @@
 
 ### New features
 
+* Accept path to coverage results as optional first argument ([@jreinert](https://github.com/codeclimate/ruby-test-reporter/pull/158))
+
 ### Bug fixes
 
 ### Changes
