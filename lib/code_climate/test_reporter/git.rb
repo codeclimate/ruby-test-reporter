@@ -36,7 +36,7 @@ module CodeClimate
 
         def committed_at
           committed_at = git("log -1 --pretty=format:%ct")
-          committed_at.to_i.zero? ? Time.zone.now : committed_at.to_i
+          committed_at.to_i.zero? ? Time.now : committed_at.to_i
         end
 
         def branch_from_git
