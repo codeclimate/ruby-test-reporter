@@ -12,18 +12,19 @@ require "code_climate/test_reporter/payload_validator"
 module CodeClimate
   module TestReporter
     class Formatter
-      class InvalidSimpleCovResultError < StandardError; end
-
       def format(results)
-        begin
-          validated_results = results.values.fetch(0).fetch("coverage")
-        rescue NoMethodError, KeyError => ex
-          raise InvalidSimpleCovResultError, ex.message
+        simplecov_results = results.map do |command_name, data|
+          SimpleCov::Result.from_hash(command_name => data)
         end
 
-        simplecov_results = SimpleCov::Result.new(validated_results)
+        simplecov_result =
+          if simplecov_results.size == 1
+            simplecov_results.first
+          else
+            merge_results(simplecov_results)
+          end
 
-        payload = to_payload(simplecov_results)
+        payload = to_payload(simplecov_result)
         PayloadValidator.validate(payload)
 
         payload
@@ -84,6 +85,19 @@ module CodeClimate
       # Fixes [#7] possible segmentation fault when calling #round on a Rational
       def round(numeric, precision)
         Float(numeric).round(precision)
+      end
+
+      # Re-implementation of Simplecov::ResultMerger#merged_result, which is
+      # needed because calling it directly gets you into caching land with files
+      # on disk.
+      def merge_results(results)
+        merged = {}
+        results.each do |result|
+          merged = result.original_result.merge_resultset(merged)
+        end
+        result = SimpleCov::Result.new(merged)
+        result.command_name = results.map(&:command_name).sort.join(", ")
+        result
       end
     end
   end

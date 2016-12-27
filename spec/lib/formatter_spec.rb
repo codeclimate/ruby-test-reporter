@@ -10,7 +10,8 @@ module CodeClimate::TestReporter
           "RSpec" => {
             "coverage" => {
               "#{SimpleCov.root}/spec/fixtures/fake_project/fake_project.rb" => [5,3,nil,0]
-            }
+            },
+            "timestamp" => Time.now.to_i,
           }
         )
       end
@@ -45,6 +46,16 @@ module CodeClimate::TestReporter
           }
         ],
       )
+    end
+
+    it "addresses Issue #7" do
+      simplecov_result = load_resultset("issue_7", %r{^.*/i18n-tasks/})
+      formatter = Formatter.new
+      formatted_request = within_repository("issue_7") do
+        formatter.format(simplecov_result)
+      end
+
+      expect(formatted_request[:covered_percent]).to be_within(1.0).of(94)
     end
   end
 end
