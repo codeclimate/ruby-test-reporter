@@ -4,7 +4,19 @@
 
 ### New features
 
+### Bug fixes
+
+### Changes
+
+### v1.0.4 (2016-12-29)
+
+### New features
+
 * Accept path to coverage results as optional first argument ([@jreinert](https://github.com/codeclimate/ruby-test-reporter/pull/158))
+
+### Bug fixes
+
+* Handle multi-command resultsets ([@pbrisbin](https://github.com/codeclimate/ruby-test-reporter/pull/163))
 
 ### Bug fixes
 
