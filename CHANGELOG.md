@@ -18,10 +18,6 @@
 
 * Handle multi-command resultsets ([@pbrisbin](https://github.com/codeclimate/ruby-test-reporter/pull/163))
 
-### Bug fixes
-
-### Changes
-
 ## v1.0.3 (2016-11-09)
 
 ### Bug fixes
