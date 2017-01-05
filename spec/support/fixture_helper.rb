@@ -4,7 +4,7 @@ module FixtureHelper
   def within_repository(name)
     old_pwd = Dir.pwd
     FileUtils.cd("spec/fixtures")
-    system("tar -xvzf #{name}.tar.gz >/dev/null") or
+    system("tar -xzf #{name}.tar.gz >/dev/null") or
       raise ArgumentError, "could not extract #{name}.tar.gz"
     FileUtils.cd(name)
     yield
