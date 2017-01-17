@@ -5,7 +5,7 @@ module CodeClimate
         def info
           {
             head:         head,
-            committed_at: committed_at,
+            committed_at: committed_at_from_ci_or_git,
             branch:       branch_from_git_or_ci,
           }
         end
@@ -34,9 +34,17 @@ module CodeClimate
           git("log -1 --pretty=format:'%H'")
         end
 
-        def committed_at
+        def committed_at_from_ci_or_git
+          committed_at_from_ci || committed_at_from_git
+        end
+
+        def committed_at_from_ci
+          Ci.service_data[:committed_at]
+        end
+
+        def committed_at_from_git
           committed_at = git("log -1 --pretty=format:%ct")
-          committed_at.to_i.zero? ? Time.now : committed_at.to_i
+          committed_at.nil? ? nil : committed_at.to_i
         end
 
         def branch_from_git

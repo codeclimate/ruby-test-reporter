@@ -70,6 +70,7 @@ module CodeClimate
             build_url:        env["CI_BUILD_URL"],
             branch:           env["CI_BRANCH"],
             commit_sha:       env["CI_COMMIT_ID"],
+            committed_at:     env["CI_COMMITED_AT"],
           }
         elsif env["CI_NAME"] =~ /VEXOR/i
           {
