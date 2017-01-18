@@ -5,7 +5,7 @@ module CodeClimate
         def info
           {
             head:         head,
-            committed_at: committed_at_from_ci_or_git,
+            committed_at: committed_at_from_git_or_ci,
             branch:       branch_from_git_or_ci,
           }
         end
@@ -14,8 +14,8 @@ module CodeClimate
           clean_service_branch || clean_git_branch || "master"
         end
 
-        def committed_at_from_ci_or_git
-          committed_at_from_ci || committed_at_from_git
+        def committed_at_from_git_or_ci
+          committed_at_from_git || committed_at_from_ci
         end
 
         def clean_service_branch
@@ -39,12 +39,12 @@ module CodeClimate
         end
 
         def committed_at_from_ci
-          Ci.service_data[:committed_at]
+          Ci.service_data[:committed_at].to_i
         end
 
         def committed_at_from_git
           committed_at = git("log -1 --pretty=format:%ct")
-          committed_at.nil? ? nil : committed_at.to_i
+          committed_at.to_i.zero? ? nil : committed_at.to_i
         end
 
         def branch_from_git
