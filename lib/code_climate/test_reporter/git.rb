@@ -14,6 +14,10 @@ module CodeClimate
           clean_service_branch || clean_git_branch || "master"
         end
 
+        def committed_at_from_ci_or_git
+          committed_at_from_ci || committed_at_from_git
+        end
+
         def clean_service_branch
           ci_branch = String(Ci.service_data[:branch])
           clean = ci_branch.strip.sub(%r{^origin/}, "")
@@ -32,10 +36,6 @@ module CodeClimate
 
         def head
           git("log -1 --pretty=format:'%H'")
-        end
-
-        def committed_at_from_ci_or_git
-          committed_at_from_ci || committed_at_from_git
         end
 
         def committed_at_from_ci
