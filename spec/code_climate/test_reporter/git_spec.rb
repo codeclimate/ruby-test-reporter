@@ -84,7 +84,7 @@ module CodeClimate::TestReporter
         expect(Git.committed_at_from_git_or_ci).to eq Git.send(:committed_at_from_git)
       end
 
-      it 'returns the committed_at from git if there is no ci committed_at' do
+      it 'returns the committed_at from ci if there is no git committed_at' do
         expect(Git).to receive(:committed_at_from_git).and_return(nil)
         allow(Ci).to receive(:service_data).and_return({committed_at: '1484768698'})
 
