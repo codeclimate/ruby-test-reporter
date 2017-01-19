@@ -39,7 +39,9 @@ module CodeClimate
         end
 
         def committed_at_from_ci
-          Ci.service_data[:committed_at].to_i
+          if (value = Ci.service_data[:committed_at])
+            value.to_i
+          end
         end
 
         def committed_at_from_git
