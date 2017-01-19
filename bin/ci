@@ -12,4 +12,4 @@ ruby -v
 bundle install
 bundle exec rake
 
-bundle exec codeclimate-test-reporter
+CODECLIMATE_REPO_TOKEN=c4881e09870b0fac1291c93339b36ffe36210a2645c1ad25e52d8fda3943fb4d bundle exec codeclimate-test-reporter
