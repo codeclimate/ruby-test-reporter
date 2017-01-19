@@ -6,11 +6,15 @@
 
 ### Bug fixes
 
+### Changes
+
+### v1.0.5 (2016-01-19)
+
+### Bug fixes
+
 * Allow Codeship users to send a test coverage report without mounting their
   `.git` directory within the docker container where they run their tests.
   ([@antoniobg](https://github.com/codeclimate/ruby-test-reporter/pull/168))
-
-### Changes
 
 ### v1.0.4 (2016-12-29)
 
