@@ -37,6 +37,15 @@ module CodeClimate::TestReporter
       }.to_not raise_error
     end
 
+    it "does not raise if there's a committed_at in ci_service data" do
+      payload[:git][:committed_at] = nil
+      payload[:ci_service] = {}
+      payload[:ci_service][:committed_at] = Time.now.to_i.to_s
+      expect {
+        PayloadValidator.validate(payload)
+      }.to_not raise_error
+    end
+
     it "raises when there is no committed_at" do
       payload[:git][:committed_at] = nil
       expect {

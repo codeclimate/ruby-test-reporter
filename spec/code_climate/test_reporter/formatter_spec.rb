@@ -4,6 +4,7 @@ require 'fileutils'
 module CodeClimate::TestReporter
   describe Formatter do
     it "converts simplecov format to code climate http payload format" do
+      expect(Git).to receive(:branch_from_git_or_ci).and_return("master")
       formatter = Formatter.new
       formatted_request = within_repository("fake_project") do
         formatter.format(

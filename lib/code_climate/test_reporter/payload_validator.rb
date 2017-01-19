@@ -27,7 +27,8 @@ module CodeClimate
       end
 
       def committed_at
-        @payload[:git] && @payload[:git][:committed_at]
+        (@payload[:git] && @payload[:git][:committed_at]) ||
+          (@payload[:ci_service] && @payload[:ci_service][:committed_at])
       end
 
       def run_at
