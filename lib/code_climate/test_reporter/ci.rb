@@ -4,12 +4,16 @@ module CodeClimate
 
       def self.service_data(env = ENV)
         if env["TRAVIS"]
+          travis_extras = {}
+          if env["TRAVIS_PULL_REQUEST_SHA"] != ""
+            travis_extras[:commit_sha] = env["TRAVIS_PULL_REQUEST_SHA"]
+          end
           {
             name:             "travis-ci",
             branch:           env["TRAVIS_BRANCH"],
             build_identifier: env["TRAVIS_JOB_ID"],
             pull_request:     env["TRAVIS_PULL_REQUEST"]
-          }
+          }.merge(travis_extras)
         elsif env["CIRCLECI"]
           {
             name:             "circleci",
