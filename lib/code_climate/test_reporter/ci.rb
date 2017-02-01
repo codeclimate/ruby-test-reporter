@@ -66,11 +66,13 @@ module CodeClimate
         elsif env["CI_NAME"] =~ /codeship/i
           {
             name:             "codeship",
-            build_identifier: env["CI_BUILD_NUMBER"],
+            build_identifier: env["CI_BUILD_ID"],
+            # build URL cannot be reconstructed for Codeship since env does not contain project ID
             build_url:        env["CI_BUILD_URL"],
             branch:           env["CI_BRANCH"],
             commit_sha:       env["CI_COMMIT_ID"],
-            committed_at:     env["CI_COMMITED_AT"],
+            # CI timestamp is not quite equivalent to commited at but there's no equivalent in Codeship
+            committed_at:     env["CI_TIMESTAMP"]
           }
         elsif env["CI_NAME"] =~ /VEXOR/i
           {
