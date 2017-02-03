@@ -16,6 +16,14 @@ instructions on our [documentation site](https://docs.codeclimate.com/docs/test-
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
+## Usage
+
+```
+CODECLIMATE_REPO_TOKEN=my_token bundle exec rspec && bundle exec codeclimate-test-reporter
+```
+
+**Optional**: configure `CODECLIMATE_API_HOST` to point to a self-hosted version of Code Climate.
+
 ## Troubleshooting / FYIs
 
 Across the many different testing frameworks, setups, and environments, there
