@@ -12,7 +12,7 @@ Code Climate - [https://codeclimate.com](https://codeclimate.com)
 This gem requires a user, but not necessarily a paid account, on Code Climate,
 so if you don't have one the first step is to signup at:
 [https://codeclimate.com](https://codeclimate.com). Then follow the
-instructions on our [documentation site](https://docs.codeclimate.com/docs/ruby)
+instructions on our [documentation site](https://docs.codeclimate.com/docs/test-coverage-ruby).
 
 Please contact hello@codeclimate.com if you need any assistance setting this up.
 
