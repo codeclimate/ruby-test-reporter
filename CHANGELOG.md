@@ -8,7 +8,17 @@
 
 ### Changes
 
-### v1.0.5 (2016-01-19)
+### v1.0.6 (2017-02-22)
+
+### Bug fixes
+
+* Allow Codeship users to send a test coverage report without mounting their
+  `.git` directory within the docker container where they run their tests
+  _without_ manually exposing an environment variable. Instead, use an
+  environment variable already exposed by the CI environment.
+  ([@c-knowles](https://github.com/codeclimate/ruby-test-reporter/pull/172))
+
+### v1.0.5 (2017-01-19)
 
 ### Bug fixes
 
