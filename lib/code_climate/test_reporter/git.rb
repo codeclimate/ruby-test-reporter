@@ -4,7 +4,7 @@ module CodeClimate
       class << self
         def info
           {
-            head:         head,
+            head:         head_from_ci_or_git,
             committed_at: committed_at_from_git_or_ci,
             branch:       branch_from_git_or_ci,
           }
@@ -34,8 +34,8 @@ module CodeClimate
 
         private
 
-        def head
-          git("log -1 --pretty=format:'%H'")
+        def head_from_ci_or_git
+          Ci.service_data[:commit_sha] || git("log -1 --pretty=format:'%H'")
         end
 
         def committed_at_from_ci
