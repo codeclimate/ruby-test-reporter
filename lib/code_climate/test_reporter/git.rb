@@ -10,6 +10,10 @@ module CodeClimate
           }
         end
 
+        def head_from_git_or_ci
+          head_from_git || head_from_ci
+        end
+
         def branch_from_git_or_ci
           clean_service_branch || clean_git_branch || "master"
         end
@@ -33,10 +37,6 @@ module CodeClimate
         end
 
         private
-
-        def head_from_git_or_ci
-          head_from_git || head_from_ci
-        end
 
         def head_from_git
           commit_hash = git("log -1 --pretty=format:'%H'")
