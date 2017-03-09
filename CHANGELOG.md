@@ -8,6 +8,14 @@
 
 ### Changes
 
+### v1.0.7 (2017-03-08)
+
+### Bug fixes
+
+* Continue improving our support for sending payloads in contexts where git is
+  not available.
+  ([@sullerandras](https://github.com/codeclimate/ruby-test-reporter/pull/177))
+
 ### v1.0.6 (2017-02-22)
 
 ### Bug fixes
