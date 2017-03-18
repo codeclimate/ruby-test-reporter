@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }.reject { |f| f == "ci" }
 
   spec.required_ruby_version = ">= 1.9"
-  spec.add_runtime_dependency "simplecov"
+  spec.add_runtime_dependency "simplecov", ">= 0.10", "<= 0.13"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "pry"
