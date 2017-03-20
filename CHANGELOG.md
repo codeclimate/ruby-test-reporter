@@ -6,11 +6,18 @@
 
 ### Bug fixes
 
+### Changes
+
+### v1.0.8 (2017-03-20)
+
+### Bug fixes
+
 * Lock simplecov to `<= 0.13`, so we can safely use an internal-to-simplecov
   method.
   ([@bliof](https://github.com/codeclimate/ruby-test-reporter/pull/181))
 
-### Changes
+  Note: you may need to run `bundle update codeclimate-test-reporter simplecov`
+  to resolve your bundle.
 
 ### v1.0.7 (2017-03-08)
 
