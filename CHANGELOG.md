@@ -6,6 +6,10 @@
 
 ### Bug fixes
 
+* Lock simplecov to `<= 0.13`, so we can safely use an internal-to-simplecov
+  method.
+  ([@bliof](https://github.com/codeclimate/ruby-test-reporter/pull/181))
+
 ### Changes
 
 ### v1.0.7 (2017-03-08)
