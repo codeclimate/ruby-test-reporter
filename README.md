@@ -18,8 +18,8 @@ Please contact hello@codeclimate.com if you need any assistance setting this up.
 
 ## Usage
 
-```
-CODECLIMATE_REPO_TOKEN=my_token bundle exec rspec && bundle exec codeclimate-test-reporter
+```console
+bundle exec rspec && CODECLIMATE_REPO_TOKEN=my_token bundle exec codeclimate-test-reporter
 ```
 
 **Optional**: configure `CODECLIMATE_API_HOST` to point to a self-hosted version of Code Climate.
