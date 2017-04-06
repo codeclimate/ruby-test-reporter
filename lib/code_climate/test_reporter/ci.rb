@@ -97,6 +97,11 @@ module CodeClimate
             branch:           env["CI_BUILD_REF_NAME"],
             commit_sha:       env["CI_BUILD_REF"],
           }
+        elsif env["BRANCH"]
+          {
+            name:            "custom-branch",
+            branch:          env["BRANCH"]
+          }
         else
           {}
         end
