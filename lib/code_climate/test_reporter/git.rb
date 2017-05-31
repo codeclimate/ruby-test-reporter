@@ -4,14 +4,14 @@ module CodeClimate
       class << self
         def info
           {
-            head:         head_from_git_or_ci,
+            head:         head_from_ci_or_git,
             committed_at: committed_at_from_git_or_ci,
             branch:       branch_from_git_or_ci,
           }
         end
 
-        def head_from_git_or_ci
-          head_from_git || head_from_ci
+        def head_from_ci_or_git
+          head_from_ci || head_from_git
         end
 
         def branch_from_git_or_ci
@@ -44,7 +44,8 @@ module CodeClimate
         end
 
         def head_from_ci
-          Ci.service_data[:commit_sha]
+          sha = Ci.service_data[:commit_sha]
+          return sha unless sha && sha.empty?
         end
 
         def committed_at_from_ci
