@@ -79,18 +79,26 @@ module CodeClimate::TestReporter
       end
     end
 
-    describe 'head_from_git_or_ci' do
+    describe 'head_from_ci_or_git' do
       it 'returns the head sha from git' do
+        expect(Ci).to receive(:service_data).and_return({})
         expect(Git).to receive(:git).with("log -1 --pretty=format:'%H'").and_return("1234")
 
-        expect(Git.head_from_git_or_ci).to eq '1234'
+        expect(Git.head_from_ci_or_git).to eq '1234'
       end
 
-      it 'returns the head sha from ci if git is not available' do
-        expect(Git).to receive(:git).with("log -1 --pretty=format:'%H'").and_return("")
-        expect(Ci).to receive(:service_data).and_return({commit_sha: "4567"})
+      it 'returns the head sha from git if ci is not available' do
+        expect(Ci).to receive(:service_data).and_return({})
+        expect(Git).to receive(:git).with("log -1 --pretty=format:'%H'").and_return("1234")
 
-        expect(Git.head_from_git_or_ci).to eq '4567'
+        expect(Git.head_from_ci_or_git).to eq '1234'
+      end
+
+      it 'returns the head sha from ci if ci and git are available' do
+        expect(Ci).to receive(:service_data).and_return({commit_sha: "aabbcc"})
+        allow(Git).to receive(:git).with("log -1 --pretty=format:'%H'").and_return("112233")
+
+        expect(Git.head_from_ci_or_git).to eq 'aabbcc'
       end
     end
 
