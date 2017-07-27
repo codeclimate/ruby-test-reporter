@@ -19,7 +19,7 @@ module CodeClimate
         end
 
         def committed_at_from_git_or_ci
-          committed_at_from_git || committed_at_from_ci
+          committed_at_from_git || committed_at_from_ci || Time.now.to_i
         end
 
         def clean_service_branch

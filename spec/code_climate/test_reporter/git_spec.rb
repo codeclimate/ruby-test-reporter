@@ -110,7 +110,7 @@ module CodeClimate::TestReporter
         expect(Git).to receive(:committed_at_from_git).and_return(nil)
         allow(Ci).to receive(:service_data).and_return({})
 
-        expect(Git.committed_at_from_git_or_ci).to be_nil
+        expect(Git.committed_at_from_git_or_ci).to be_a Numeric
       end
     end
 
