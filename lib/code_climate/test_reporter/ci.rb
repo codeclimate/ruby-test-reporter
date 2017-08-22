@@ -62,6 +62,17 @@ module CodeClimate
             commit_sha:       env["CI_COMMIT"],
             pull_request:     env["CI_PULL_REQUEST"],
           }
+        elsif env["DRONE"]
+          # open-sourced DroneCI uses a different set of env vars
+          # http://readme.drone.io/usage/environment-reference/
+          {
+            name:             "drone",
+            build_identifier: env["DRONE_BUILD_NUMBER"],
+            build_url:        env["DRONE_BUILD_LINK"],
+            branch:           env["DRONE_BRANCH"],
+            commit_sha:       env["DRONE_COMMIT"],
+            pull_request:     env["DRONE_PULL_REQUEST"],
+          }
         elsif env["CI_NAME"] =~ /codeship/i
           {
             name:             "codeship",
