@@ -87,17 +87,39 @@ module CodeClimate
         Float(numeric).round(precision)
       end
 
-      # Re-implementation of Simplecov::ResultMerger#merged_result, which is
-      # needed because calling it directly gets you into caching land with files
-      # on disk.
+      # --
+      # @return [SimpleCov::Result]
+      # @param [Array<SimpleCov::Result>] results the results
+      # merged_results is a re-implementation of the current method
+      # Simplecov::ResultMerger#merged_result, which is needed because
+      # calling it directly gets you into caching land.
+      # --
       def merge_results(results)
         merged = {}
         results.each do |result|
-          merged = result.original_result.merge_resultset(merged)
+          og = result.original_result
+          result = SimpleCov::RawCoverage.merge_resultsets(og, merged) if !legacy?
+          result = og.merge_resultset(merged) if legacy?
+          merged = result
         end
+
         result = SimpleCov::Result.new(merged)
-        result.command_name = results.map(&:command_name).sort.join(", ")
+        result.command_name = results.
+          map(&:command_name).sort.
+          join(", ")
+
         result
+      end
+
+      # --
+      # legacy? checks to see if we are on a legacy version of
+      # simplecov, so that we can switch the merge strategy we use
+      # when shipping out the result set.
+      # @return [true, false]
+      # --
+      def legacy?
+        @legacy ||= Gem::Version.new("0.13.0") >=
+          Gem::Version.new(SimpleCov::VERSION)
       end
     end
   end
