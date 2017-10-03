@@ -7,4 +7,5 @@ dependencies:
 
 test:
   override:
-    - bin/ci
+  - SIMPLECOV_VERSION="<= 0.13" bin/ci
+  - SIMPLECOV_VERSION=">= 0.14" bin/ci
