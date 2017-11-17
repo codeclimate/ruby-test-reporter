@@ -79,6 +79,8 @@ module CodeClimate
             build_identifier: env["HEROKU_TEST_RUN_ID"],
             branch:           env["HEROKU_TEST_RUN_BRANCH"],
             commit_sha:       env["HEROKU_TEST_RUN_COMMIT_VERSION"],
+            # CI timestamp is not available, so set HEROKU_TEST_RUN_COMMITTED_AT='$(date +%s)' when running as a workaround
+            committed_at:     env["HEROKU_TEST_RUN_COMMITTED_AT"]
           }
         elsif env["CI_NAME"] =~ /VEXOR/i
           {
