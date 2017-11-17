@@ -73,6 +73,13 @@ module CodeClimate
             # CI timestamp is not quite equivalent to commited at but there's no equivalent in Codeship
             committed_at:     env["CI_TIMESTAMP"],
           }
+         elsif env["HEROKU_APP_ID"]
+          {
+            name:             "heroku",
+            build_identifier: env["HEROKU_TEST_RUN_ID"],
+            branch:           env["HEROKU_TEST_RUN_BRANCH"],
+            commit_sha:       env["HEROKU_TEST_RUN_COMMIT_VERSION"],
+          }
         elsif env["CI_NAME"] =~ /VEXOR/i
           {
             name:             "vexor",
