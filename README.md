@@ -1,6 +1,6 @@
-# codeclimate-test-reporter - [SOON TO BE DEPRECATED]
+# codeclimate-test-reporter - [DEPRECATED]
 
-These configuration instructions refer to a language-specific test reporter that will soon be deprecated in favor of our new unified test reporter client. The [new test reporter](https://docs.codeclimate.com/v1.0/docs/configuring-test-coverage) is faster, distributed as a static binary, has support for parallelized CI builds, and will receive ongoing support by the team here. The existing test reporters for Ruby, Python, PHP, and Javascript are not yet deprecated but they're unofficially in maintenance mode.
+These configuration instructions refer to a language-specific test reporter who is now deprecated in favor of our new unified test reporter client. The [new test reporter](https://docs.codeclimate.com/v1.0/docs/configuring-test-coverage) is faster, distributed as a static binary, has support for parallelized CI builds, and will receive ongoing support by the team here. The existing test reporters for Ruby, Python, PHP, and Javascript are now deprecated.
 
 [![Code Climate](https://codeclimate.com/github/codeclimate/ruby-test-reporter/badges/gpa.svg)](https://codeclimate.com/github/codeclimate/ruby-test-reporter)
 
