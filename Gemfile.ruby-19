@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "addressable", "< 2.5"
 gem "json", "~> 1.8", "< 2"
+gem "rake", "< 12.3.0"
 gem "webmock", "< 2.3.1"
 
 gemspec
