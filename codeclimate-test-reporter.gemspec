@@ -21,4 +21,14 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "webmock"
+
+  spec.post_install_message = %q(
+  Code Climate's codeclimate-test-reporter gem has been deprecated in favor of
+  our language-agnostic unified test reporter. The new test reporter is faster,
+  distributed as a static binary so dependency conflicts never occur, and
+  supports parallelized CI builds & multi-language CI configurations.
+
+  Please visit https://docs.codeclimate.com/v1.0/docs/configuring-test-coverage
+  for help setting up your CI process with our new test reporter.
+  )
 end
