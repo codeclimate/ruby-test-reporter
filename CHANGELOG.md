@@ -8,6 +8,10 @@
 
 ### Changes
 
+### v1.0.9 (2018-10-08)
+
+* Add deprecation notice to post-install gem message.
+
 ### v1.0.8 (2017-03-20)
 
 ### Bug fixes
